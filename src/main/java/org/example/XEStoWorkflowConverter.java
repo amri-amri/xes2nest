@@ -101,6 +101,8 @@ public class XEStoWorkflowConverter {
     private static final String ID = "XESIDClass";
 
 
+    private static final String NATURALLY_NESTED = "XESNaturallyNestedClass";
+
     private static final String COLLECTION = "XESCollectionClass";
 
     private static final String LIST = "XESListClass";
@@ -114,7 +116,7 @@ public class XEStoWorkflowConverter {
     //attribute classes
     AggregateClass baseClass = (AggregateClass) model.getAggregateSystemClass().createSubclass(Classnames.BASE);
     baseClass.addAttribute("key",model.getStringSystemClass());
-    baseClass.addAttribute("value",model.getDataSystemClass());
+    baseClass.addAttribute("value",baseClass);
     baseClass.setAbstract(true);
     baseClass.finishEditing();
 
@@ -163,17 +165,22 @@ public class XEStoWorkflowConverter {
     idClass.finishEditing();
 
     //collection classes
-    AggregateClass collectionClass = (AggregateClass) baseClass.createSubclass(Classnames.COLLECTION);
+    AggregateClass naturallyNested = (AggregateClass) baseClass.createSubclass(Classnames.NATURALLY_NESTED);
+    naturallyNested.updateAttributeType("value",model.getCollectionSystemClass());
+    naturallyNested.setAbstract(true);
+    naturallyNested.finishEditing();
+
+    AggregateClass collectionClass = (AggregateClass) naturallyNested.createSubclass(Classnames.COLLECTION);
     collectionClass.updateAttributeType("value",model.getCollectionSystemClass());
-    collectionClass.setAbstract(true);
+    collectionClass.setAbstract(false);
     collectionClass.finishEditing();
 
-    AggregateClass listClass = (AggregateClass) collectionClass.createSubclass(Classnames.LIST);
+    AggregateClass listClass = (AggregateClass) naturallyNested.createSubclass(Classnames.LIST);
     listClass.updateAttributeType("value",model.getListSystemClass()); //TODO Nur XESBaseClass-Objekte als Inhalt (wie oben...)
     listClass.setAbstract(false);
     listClass.finishEditing();
 
-    AggregateClass containerClass = (AggregateClass) collectionClass.createSubclass(Classnames.CONTAINER);
+    AggregateClass containerClass = (AggregateClass) naturallyNested.createSubclass(Classnames.CONTAINER);
     containerClass.updateAttributeType("value",model.getSetSystemClass()); //TODO Nur XESBaseClass-Objekte als Inhalt (wie oben...)
     containerClass.setAbstract(false);
     containerClass.finishEditing();
