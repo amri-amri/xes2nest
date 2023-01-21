@@ -14,26 +14,18 @@ import de.uni_trier.wi2.procake.data.object.nest.utils.NESTWorkflowModifier;
 import de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowBuilderImpl;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.sql.Timestamp;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import org.deckfour.xes.classification.XEventClassifier;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
 import org.deckfour.xes.in.XesXmlParser;
-import org.deckfour.xes.model.XAttribute;
-import org.deckfour.xes.model.XAttributeMap;
-import org.deckfour.xes.model.XElement;
-import org.deckfour.xes.model.XEvent;
-import org.deckfour.xes.model.XLog;
-import org.deckfour.xes.model.XTrace;
-import org.deckfour.xes.model.impl.XAttributeBooleanImpl;
-import org.deckfour.xes.model.impl.XAttributeCollectionImpl;
-import org.deckfour.xes.model.impl.XAttributeContainerImpl;
-import org.deckfour.xes.model.impl.XAttributeLiteralImpl;
-import org.deckfour.xes.model.impl.XAttributeTimestampImpl;
-import org.deckfour.xes.model.impl.XEventImpl;
-import org.deckfour.xes.model.impl.XLogImpl;
-import org.deckfour.xes.model.impl.XTraceImpl;
+import org.deckfour.xes.model.*;
+import org.deckfour.xes.model.impl.*;
+import org.example.classFactories.*;
 
 public class XEStoWorkflowConverter {
 
@@ -42,6 +34,8 @@ public class XEStoWorkflowConverter {
   final private Model model;
   final private XLog log;
   final private boolean[][][] edges;
+
+  private Map<String, ClassFactory> factories;
 
 
   public XEStoWorkflowConverter(final Model model, String filepath) throws Exception {
@@ -60,6 +54,8 @@ public class XEStoWorkflowConverter {
         edges[trace][e1][e2] = false;
       }
     }
+    initializeFactories();
+    addEventClass(model);
   }
 
 
@@ -111,80 +107,7 @@ public class XEStoWorkflowConverter {
 
   }
 
-  public static void addXESClasses(Model model){
-
-    //attribute classes
-    AggregateClass baseClass = (AggregateClass) model.getAggregateSystemClass().createSubclass(Classnames.BASE);
-    baseClass.addAttribute("key",model.getStringSystemClass());
-    baseClass.addAttribute("value",baseClass);
-    baseClass.setAbstract(true);
-    baseClass.finishEditing();
-
-
-    //unnaturally nested classes (classes whose objects have key, value and attributes)
-    //such object can be nested but it is not their main feature, contrary to collection objects
-    //which define their value through nesting
-    AggregateClass unnaturallyNested = (AggregateClass) baseClass.createSubclass(Classnames.UNNATURALLY_NESTED);
-    unnaturallyNested.addAttribute("attributes",model.getSetSystemClass()); //TODO HIER SOLLTE STATT DER SystemSetClass EINE KLASSE HIN, DIE Sets DEFINIERT, DIE NUR OBJEKTE DER KLASSE XESBaseClass (->Erben) ENTHALTEN
-    unnaturallyNested.setAbstract(true);
-    unnaturallyNested.finishEditing();
-
-    AggregateClass literalClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.LITERAL);
-    literalClass.updateAttributeType("value",model.getStringSystemClass());
-    literalClass.setAbstract(false);
-    literalClass.finishEditing();
-
-    AggregateClass booleanClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.BOOLEAN);
-    booleanClass.updateAttributeType("value",model.getBooleanSystemClass());
-    booleanClass.setAbstract(false);
-    booleanClass.finishEditing();
-
-    AggregateClass continuousClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.CONTINUOUS);
-    continuousClass.updateAttributeType("value",model.getDoubleSystemClass());
-    continuousClass.setAbstract(false);
-    continuousClass.finishEditing();
-
-    AggregateClass discreteClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.DISCRETE);
-    discreteClass.updateAttributeType("value",model.getIntegerSystemClass());
-    discreteClass.setAbstract(false);
-    discreteClass.finishEditing();
-
-    AggregateClass timestampClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.TIMESTAMP);
-    timestampClass.updateAttributeType("value",model.getTimestampSystemClass());
-    timestampClass.setAbstract(false);
-    timestampClass.finishEditing();
-
-    AggregateClass durationClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.DURATION);
-    durationClass.updateAttributeType("value",model.getIntegerSystemClass());
-    durationClass.setAbstract(false);
-    durationClass.finishEditing();
-
-    AggregateClass idClass = (AggregateClass) unnaturallyNested.createSubclass(Classnames.ID);
-    idClass.updateAttributeType("value",model.getStringSystemClass());
-    idClass.setAbstract(false);
-    idClass.finishEditing();
-
-    //collection classes
-    AggregateClass naturallyNested = (AggregateClass) baseClass.createSubclass(Classnames.NATURALLY_NESTED);
-    naturallyNested.updateAttributeType("value",model.getCollectionSystemClass());
-    naturallyNested.setAbstract(true);
-    naturallyNested.finishEditing();
-
-    AggregateClass collectionClass = (AggregateClass) naturallyNested.createSubclass(Classnames.COLLECTION);
-    collectionClass.updateAttributeType("value",model.getCollectionSystemClass());
-    collectionClass.setAbstract(false);
-    collectionClass.finishEditing();
-
-    AggregateClass listClass = (AggregateClass) naturallyNested.createSubclass(Classnames.LIST);
-    listClass.updateAttributeType("value",model.getListSystemClass()); //TODO Nur XESBaseClass-Objekte als Inhalt (wie oben...)
-    listClass.setAbstract(false);
-    listClass.finishEditing();
-
-    AggregateClass containerClass = (AggregateClass) naturallyNested.createSubclass(Classnames.CONTAINER);
-    containerClass.updateAttributeType("value",model.getSetSystemClass()); //TODO Nur XESBaseClass-Objekte als Inhalt (wie oben...)
-    containerClass.setAbstract(false);
-    containerClass.finishEditing();
-
+  private static void addEventClass(Model model){
     //event class
     SetClass eventClass = (SetClass) model.getSetSystemClass().createSubclass(Classnames.EVENT);
     eventClass.setElementClass(model.getClass(Classnames.BASE));
@@ -348,7 +271,7 @@ public class XEStoWorkflowConverter {
 
   public static Filter keyHasStringValueFilter(String key, String value){
     return xEvent -> {
-      XAttribute attribute = xEvent.getAttributes().get((Object) key);
+      XAttribute attribute = xEvent.getAttributes().get(key);
       if (attribute==null) return false;
       return attribute.toString().equals(value);
     };
@@ -411,74 +334,60 @@ public class XEStoWorkflowConverter {
   }
 
   private AggregateObject convertAttribute(XAttribute attribute) throws Exception {
-    switch(attribute.getClass().getSimpleName()){
+    String attributeClassName = attribute.getClass().getSimpleName();
+    ClassFactory factory = factories.get(attributeClassName);
+    AggregateClass nClass = factory.getClass(attribute.getKey());
+    AggregateObject nObject = model.createObject(nClass.getName());
+    nObject.setAttributeValue("key",utils.createStringObject(attribute.getKey()));
+    switch(attributeClassName){
       case "XAttributeLiteralImpl":
         XAttributeLiteralImpl XESliteral = (XAttributeLiteralImpl) attribute;
-        AggregateObject literal = model.createObject(Classnames.LITERAL);
-        literal.setAttributeValue("key",utils.createStringObject(XESliteral.getKey()));
-        literal.setAttributeValue("value",utils.createStringObject(XESliteral.getValue()));
-        literal.setAttributeValue("attributes",getAttributeSet(XESliteral));
-        return literal;
+        nObject.setAttributeValue("value",utils.createStringObject(XESliteral.getValue()));
+        nObject.setAttributeValue("attributes",getAttributeSet(XESliteral));
+        return nObject;
       case "XAttributeBooleanImpl":
         XAttributeBooleanImpl XESboolean = (XAttributeBooleanImpl) attribute;
-        AggregateObject bool = model.createObject(Classnames.BOOLEAN);
-        bool.setAttributeValue("key",utils.createStringObject(XESboolean.getKey()));
-        bool.setAttributeValue("value",utils.createBooleanObject(Boolean.parseBoolean(XESboolean.toString())));
-        bool.setAttributeValue("attributes",getAttributeSet(XESboolean));
-        return bool;
+        nObject.setAttributeValue("value",utils.createBooleanObject(XESboolean.getValue()));
+        nObject.setAttributeValue("attributes",getAttributeSet(XESboolean));
+        return nObject;
       case "XAttributeContinuousImpl":
-        XAttributeLiteralImpl XEScontinuous = (XAttributeLiteralImpl) attribute;
-        AggregateObject continuous = model.createObject(Classnames.CONTINUOUS);
-        continuous.setAttributeValue("key",utils.createStringObject(XEScontinuous.getKey()));
-        continuous.setAttributeValue("value",utils.createDoubleObject(Double.parseDouble(XEScontinuous.getValue())));
-        continuous.setAttributeValue("attributes",getAttributeSet(XEScontinuous));
-        return continuous;
+        XAttributeContinuousImpl XEScontinuous = (XAttributeContinuousImpl) attribute;
+        nObject.setAttributeValue("value",utils.createDoubleObject(XEScontinuous.getValue()));
+        nObject.setAttributeValue("attributes",getAttributeSet(XEScontinuous));
+        return nObject;
       case "XAttributeDiscreteImpl":
-        XAttributeLiteralImpl XESdiscrete = (XAttributeLiteralImpl) attribute;
-        AggregateObject discrete = model.createObject(Classnames.DISCRETE);
-        discrete.setAttributeValue("key",utils.createStringObject(XESdiscrete.getKey()));
-        discrete.setAttributeValue("value",utils.createIntegerObject(Integer.parseInt(XESdiscrete.getValue())));
-        discrete.setAttributeValue("attributes",getAttributeSet(XESdiscrete));
-        return discrete;
+        XAttributeDiscreteImpl XESdiscrete = (XAttributeDiscreteImpl) attribute;
+        nObject.setAttributeValue("value",utils.createIntegerObject(((Long.valueOf(XESdiscrete.getValue()).intValue()))));
+        nObject.setAttributeValue("attributes",getAttributeSet(XESdiscrete));
+        return nObject;
       case "XAttributeTimestampImpl":
         XAttributeTimestampImpl XEStimestamp = (XAttributeTimestampImpl) attribute;
-        AggregateObject timestamp = model.createObject(Classnames.LITERAL);
-        timestamp.setAttributeValue("key",utils.createStringObject(XEStimestamp.getKey()));
-        timestamp.setAttributeValue("value",utils.createStringObject(XEStimestamp.getValue().toString())); //TODO: Statt StringObject TimestampObject
-        timestamp.setAttributeValue("attributes",getAttributeSet(XEStimestamp));
-        return timestamp;
-      case "XAttributeDurationImpl":
+        nObject.setAttributeValue("value",utils.createTimestampObject((new Timestamp(XEStimestamp.getValue().getTime())))); //TODO: Statt StringObject TimestampObject
+        nObject.setAttributeValue("attributes",getAttributeSet(XEStimestamp));
+        return nObject;
+      /*case "XAttributeDurationImpl":
         XAttributeLiteralImpl XESduration = (XAttributeLiteralImpl) attribute;
-        AggregateObject duration = model.createObject(Classnames.DURATION);
-        duration.setAttributeValue("key",utils.createStringObject(XESduration.getKey()));
         duration.setAttributeValue("value",utils.createIntegerObject(Integer.parseInt(XESduration.getValue())));
         duration.setAttributeValue("attributes",getAttributeSet(XESduration));
         return duration;
+       */
       case "XAttributeIDImpl":
-        XAttributeLiteralImpl XESid = (XAttributeLiteralImpl) attribute;
-        AggregateObject id = model.createObject(Classnames.ID);
-        id.setAttributeValue("key",utils.createStringObject(XESid.getKey()));
-        id.setAttributeValue("value",utils.createStringObject(XESid.getValue()));
-        id.setAttributeValue("attributes",getAttributeSet(XESid));
-        return id;
+        XAttributeIDImpl XESid = (XAttributeIDImpl) attribute;
+        nObject.setAttributeValue("value",utils.createStringObject(XESid.getValue().toString()));
+        nObject.setAttributeValue("attributes",getAttributeSet(XESid));
+        return nObject;
       case "XAttributeCollectionImpl":
         XAttributeCollectionImpl XEScollection = (XAttributeCollectionImpl) attribute;
-        AggregateObject collection = model.createObject(Classnames.COLLECTION);
-        collection.setAttributeValue("key",utils.createStringObject(XEScollection.getKey()));
-        collection.setAttributeValue("value",getAttributeSet(XEScollection));
-        return collection;
+        nObject.setAttributeValue("value",getAttributeSet(XEScollection));
+        return nObject;
       case "XAttributeContainerImpl":
         XAttributeContainerImpl XEScontainer = (XAttributeContainerImpl) attribute;
-        AggregateObject container = model.createObject(Classnames.CONTAINER);
-        container.setAttributeValue("key",utils.createStringObject(XEScontainer.getKey()));
-        container.setAttributeValue("value",getAttributeSet(XEScontainer));
-        return container;
+        nObject.setAttributeValue("value",getAttributeSet(XEScontainer));
+        return nObject;
       case "XAttributeListImpl":
-        XAttributeCollectionImpl XESlist = (XAttributeCollectionImpl) attribute;
-        AggregateObject list = model.createObject(Classnames.LIST);
-        list.setAttributeValue("key",utils.createStringObject(XESlist.getKey()));
-        list.setAttributeValue("value",getAttributeSet(XESlist));
-        return list;
+        XAttributeListImpl XESlist = (XAttributeListImpl) attribute;
+        nObject.setAttributeValue("value",getAttributeSet(XESlist));
+        return nObject;
       default:
         throw new Exception("Invalid class");
     }
@@ -590,6 +499,7 @@ public class XEStoWorkflowConverter {
           printXExtension((XExtension) o);
           return;
         }
+        if (o instanceof XEventClassifier) return;
         throw new Exception("Class " + o.getClass().getSimpleName() + " not recognized");
     }
   }
@@ -631,5 +541,30 @@ public class XEStoWorkflowConverter {
   private static void printXClassifier(XEventClassifier o){
     System.out.println(o.name());
     //TODO more information
+  }
+
+  public  void printCreatedClasses() {
+      StringBuilder str = new StringBuilder();
+      for (ClassFactory factory: factories.values()) {
+        for (String className: factory.getCreatedClasses().values()) {
+          str.append(className);
+          str.append("\n");
+        }
+      }
+      System.out.println(str.toString());
+  }
+
+  private void initializeFactories() {
+    factories = new HashMap<>();
+    factories.put("XAttributeLiteralImpl", new LiteralClassFactory(model));
+    factories.put("XAttributeBooleanImpl", new BooleanClassFactory(model));
+    factories.put("XAttributeContinuousImpl", new ContinuousClassFactory(model));
+    factories.put("XAttributeDiscreteImpl", new DiscreteClassFactory(model));
+    factories.put("XAttributeTimestampImpl", new TimestampClassFactory(model));
+    factories.put("XAttributeDurationImpl", new DurationClassFactory(model));
+    factories.put("XAttributeIDImpl", new IDClassFactory(model));
+    factories.put("XAttributeContainerImpl", new ContainerClassFactory(model));
+    factories.put("XAttributeCollectionImpl", new CollectionClassFactory(model));
+    factories.put("XAttributeListImpl", new ListClassFactory(model));
   }
 }

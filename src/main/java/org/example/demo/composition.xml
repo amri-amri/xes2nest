@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE Composition SYSTEM "schema/composition.dtd">
+
+<Composition>
+
+    <!-- BASIC FACTORIES - DO NOT CHANGE -->
+    <Factory name="util_multilanguage" class="de.uni_trier.wi2.procake.utils.multilanguage.MessageFormatterFactory">
+        <Implementation class="de.uni_trier.wi2.procake.utils.multilanguage.jdk1_4Impl.MessageFormatterImpl">
+            <Parameter name="locale" value="en"/>
+        </Implementation>
+    </Factory>
+    <Factory name="data_model" class="de.uni_trier.wi2.procake.data.model.ModelFactory">
+        <Implementation class="de.uni_trier.wi2.procake.data.model.impl.ModelFactoryObjectImpl">
+            <Parameter name="modelName" value="default"/>
+            <Parameter name="modelPath" value="/de/uni_trier/wi2/procake/model.xml"/>
+        </Implementation>
+    </Factory>
+    <Factory name="similarity" class="de.uni_trier.wi2.procake.similarity.SimilarityModelFactory">
+        <Implementation class="de.uni_trier.wi2.procake.similarity.impl.SimilarityModelFactoryObjectImpl">
+            <Parameter name="modelName" value="default"/>
+            <Parameter name="simModelName" value="default"/>
+            <Parameter name="simModelPath" value="/de/uni_trier/wi2/procake/sim.xml"/>
+        </Implementation>
+    </Factory>
+    <Factory name="objectpool" class="de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory">
+        <Implementation class="de.uni_trier.wi2.procake.data.objectpool.impl.WriteableObjectPoolImpl"/>
+    </Factory>
+    <Factory name="transformation_config" class="de.uni_trier.wi2.procake.data.object.transformation.TransformationConfigFactory">
+        <Implementation class="de.uni_trier.wi2.procake.data.object.transformation.TransformationConfigFactoryObjectImpl"/>
+    </Factory>
+    <Factory name="ontology" class="de.uni_trier.wi2.procake.utils.ontology.OntologyFactory">
+        <Implementation class="de.uni_trier.wi2.procake.utils.ontology.OntologyFactoryObjectImpl">
+            <Parameter name="ontologyName" value="carsOntology"/>
+            <Parameter name="ontologyPath" value="/de/uni_trier/wi2/procake/test/ontology/cars.owl"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.utils.ontology.OntologyFactoryObjectImpl">
+            <Parameter name="ontologyName" value="graphicsCardsOnt"/>
+            <Parameter name="ontologyPath" value="/de/uni_trier/wi2/procake/test/ontology/graphicsCards.owl"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.utils.ontology.OntologyFactoryObjectImpl">
+            <Parameter name="ontologyName" value="pizza"/>
+            <Parameter name="ontologyPath" value="/de/uni_trier/wi2/procake/test/ontology/pizza.owl"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.utils.ontology.OntologyFactoryObjectImpl">
+            <Parameter name="ontologyName" value="taxoGraphOnt"/>
+            <Parameter name="ontologyPath" value="/de/uni_trier/wi2/procake/test/ontology/taxo_graph.owl"/>
+        </Implementation>
+    </Factory>
+    <!-- Contains the different visualizer implementations.
+    Domain-specific implementations can be added by registering them in the factory after CAKE has started or by
+    creating a modified/extended composition.xml . -->
+    <Factory name="nest_visualizer" class="de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowVisualizerFactory">
+        <Implementation class="de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowStringVisualizerImpl">
+            <Parameter name="attTaskNames" value="name"/>
+            <Parameter name="attDataNames" value="name"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowStringVisualizerScientificImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowGUIVisualizerImpl">
+            <Parameter name="attTaskNames" value="name"/>
+            <Parameter name="attDataNames" value="name"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowDOTVisualizerImpl"/>
+    </Factory>
+
+    <Factory name="label_provider" class="de.uni_trier.wi2.procake.utils.objectpooleditor.LabelProviderFactory">
+        <Implementation class="de.uni_trier.wi2.procake.utils.nestworkfloweditor.NESTWorkflowEditorLabelProvider">
+            <Parameter name="multiAttributeLabelDelimiter" value="newline"/>
+            <Parameter name="displayAttributeName" value="false"/>
+            <Parameter name="WorkflowSemantic" value="name"/>
+            <Parameter name="TaskSemantic" value="name"/>
+            <!--            <Parameter name="DataSemantic" value="**full**"/>-->
+            <Parameter name="DataSemantic" value="name,amount,output_port,input_port"/>
+
+            <!--Rapidminer-->
+            <Parameter name="AbstractTaskSemantic" value="type"/>
+            <Parameter name="ComplexTaskSemantic" value="name"/>
+            <Parameter name="SubworkflowSemantic" value="parent_operator"/>
+            <Parameter name="ParentOperatorAggregate" value="name,position"/>
+
+
+            <!--Recipes-->
+            <Parameter name="AmountType" value="value,unit"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.utils.objectpooleditor.ObjectPoolEditorLabelProvider">
+            <Parameter name="Cars" value="manufacturer,make,year"/>
+            <Parameter name="AmountType" value="value,unit"/>
+        </Implementation>
+    </Factory>
+
+    <!-- IO FACTORY - HOLDS A LIST OF POSSIBLE IO-FORMATS -->
+    <Factory name="io_factory" class="de.uni_trier.wi2.procake.utils.io.IOFactory">
+
+        <!-- System schema files. Add custom domain-dependent schema files as FactorParameters below. -->
+        <FactoryParameter name="cdol.xsd" value="/de/uni_trier/wi2/procake/schema/cdol.xsd"/>
+        <FactoryParameter name="adc.xsd" value="/de/uni_trier/wi2/procake/schema/adc.xsd"/>
+        <FactoryParameter name="cdm.xsd" value="/de/uni_trier/wi2/procake/schema/cdm.xsd"/>
+        <FactoryParameter name="cdop.xsd" value="/de/uni_trier/wi2/procake/schema/cdop.xsd"/>
+        <FactoryParameter name="cdsm.xsd" value="/de/uni_trier/wi2/procake/schema/cdsm.xsd"/>
+        <FactoryParameter name="nest.xsd" value="/de/uni_trier/wi2/procake/schema/nest.xsd"/>
+        <FactoryParameter name="rwfl.xsd" value="/de/uni_trier/wi2/procake/schema/rwfl.xsd"/>
+        <FactoryParameter name="transformation.xsd" value="/de/uni_trier/wi2/procake/schema/transformation.xsd"/>
+
+        <!-- IMPORTANT BASIC READERS - MANDATORY! -->
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.ModelParserImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.SimilarityModelParserImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.TransformationConfigReaderImpl"/>
+
+        <!-- READER/WRITER -->
+
+        <!-- CAKE-DATAOBJECT - Reader - each reader reads a COMPLETE file -->
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.ObjectParser">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.ObjectPoolParser">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+
+        <!-- CONTENTHANDLER -->
+        <!-- CAKE-DATAOBJECT - ContentHandler - (subdivision of a READER) same family => can read from the same file -->
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.ObjectPoolHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.ObjectHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.NESTGraphHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.NESTSequentialWorkflowHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.NESTWorkflowHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.WorkflowHandler">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+
+        <!-- WRITER -->
+        <!-- CAKE-DATAOBJECT - Writer - same family => can be written in the same file -->
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_writerImpl.ObjectPoolWriterImpl">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_writerImpl.ObjectWriterImpl">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_writerImpl.NESTWorkflowWriterImpl">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_writerImpl.WorkflowWriterImpl">
+            <Parameter name="family" value="DataObjects_CAKE_Standard"/>
+        </Implementation>
+
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.AdaptationConfigParser"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.xml.xerces_saxImpl.AdaptationConfigHandler"/>
+
+        <Implementation class="de.uni_trier.wi2.procake.data.io.text.StringReader"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.text.StringWriter"/>
+
+        <Implementation class="de.uni_trier.wi2.procake.data.io.ser.Serializer"/>
+        <Implementation class="de.uni_trier.wi2.procake.data.io.ser.Deserializer"/>
+
+    </Factory>
+
+
+    <!-- RETRIEVAL FACTORY - HOLDS A LIST OF AVAILABLE RETRIEVERS -->
+    <Factory name="retrieval" class="de.uni_trier.wi2.procake.retrieval.RetrievalFactory">
+        <Implementation class="de.uni_trier.wi2.procake.retrieval.impl.LinearRetrieverImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.retrieval.impl.ParallelLinearRetrieverImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.retrieval.impl.GraphAStarParallelRetrieverImpl"/>
+        <Implementation class="de.uni_trier.wi2.procake.retrieval.impl.macfac.fb.FeatureMACFACRetriever"/>
+        <Implementation class="de.uni_trier.wi2.procake.retrieval.impl.macfac.fb.FeatureRetriever"/>
+    </Factory>
+
+    <!-- ADAPTATION FACTORY - HOLDS A LIST OF AVAILABLE ADAPTATION ALGORITHMS -->
+    <!--<Factory name="adaptation" class="de.uni_trier.wi2.procake.adaptation.AdaptationFactory">-->
+    <!--<Implementation class="..."/>-->
+    <!--</Factory>-->
+
+</Composition>
