@@ -35,6 +35,9 @@ public class XEStoWorkflowConverter {
   final private XLog log;
   final private boolean[][][] edges;
 
+  /**
+   * Map that contains the factories used to create custom classes for each type and key combo of XES attributes.
+   */
   private Map<String, ClassFactory> factories;
 
 
@@ -543,28 +546,45 @@ public class XEStoWorkflowConverter {
     //TODO more information
   }
 
-  public  void printCreatedClasses() {
-      StringBuilder str = new StringBuilder();
+
+  /**
+   * Prints the name of all the classes that were created during converting the XES-File.
+   * @param printKey If True, in Addition to each class name the key for which the class was created gets returned as well.
+   */
+  public  void printCreatedClasses(Boolean printKey) {
       for (ClassFactory factory: factories.values()) {
-        for (String className: factory.getCreatedClasses().values()) {
-          str.append(className);
-          str.append("\n");
+        for (Map.Entry<String, String> entry: factory.getNamesOfCreatedClasses().entrySet()) {
+          StringBuilder str = new StringBuilder();
+          if (printKey) str.append(entry.getKey()).append(": ");
+          str.append(entry.getValue()).append("\n");
+          System.out.println(str);
         }
       }
-      System.out.println(str.toString());
   }
 
+  /**
+   * Adds new factory to the Factory map. Overwrites factory in map if Key already exists.
+   * @param key Should be the classname of the XES attribute type implementation for which the Factory should be used.
+   * @param factory Factory for creating classes of a certain XES type.
+   */
+  private void addFactory(String key, ClassFactory factory) {
+    factories.put(key, factory);
+  }
+
+  /**
+   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+   */
   private void initializeFactories() {
     factories = new HashMap<>();
-    factories.put("XAttributeLiteralImpl", new LiteralClassFactory(model));
-    factories.put("XAttributeBooleanImpl", new BooleanClassFactory(model));
-    factories.put("XAttributeContinuousImpl", new ContinuousClassFactory(model));
-    factories.put("XAttributeDiscreteImpl", new DiscreteClassFactory(model));
-    factories.put("XAttributeTimestampImpl", new TimestampClassFactory(model));
-    factories.put("XAttributeDurationImpl", new DurationClassFactory(model));
-    factories.put("XAttributeIDImpl", new IDClassFactory(model));
-    factories.put("XAttributeContainerImpl", new ContainerClassFactory(model));
-    factories.put("XAttributeCollectionImpl", new CollectionClassFactory(model));
-    factories.put("XAttributeListImpl", new ListClassFactory(model));
+    addFactory("XAttributeLiteralImpl", new LiteralClassFactory(model));
+    addFactory("XAttributeBooleanImpl", new BooleanClassFactory(model));
+    addFactory("XAttributeContinuousImpl", new ContinuousClassFactory(model));
+    addFactory("XAttributeDiscreteImpl", new DiscreteClassFactory(model));
+    addFactory("XAttributeTimestampImpl", new TimestampClassFactory(model));
+    addFactory("XAttributeDurationImpl", new DurationClassFactory(model));
+    addFactory("XAttributeIDImpl", new IDClassFactory(model));
+    addFactory("XAttributeContainerImpl", new ContainerClassFactory(model));
+    addFactory("XAttributeCollectionImpl", new CollectionClassFactory(model));
+    addFactory("XAttributeListImpl", new ListClassFactory(model));
   }
 }

@@ -5,6 +5,7 @@ import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.ModelFactory;
 import de.uni_trier.wi2.procake.utils.nestworkfloweditor.NESTWorkflowEditor;
 import org.example.XEStoWorkflowConverter;
+import org.example.classFactories.ClassFactory;
 
 public class NESTWorkflowEditorDemoEmpty {
 
@@ -20,7 +21,7 @@ public class NESTWorkflowEditorDemoEmpty {
     converter.print();
 
     new NESTWorkflowEditor(converter.getWorkflows()[1]);
-    converter.printCreatedClasses();
+    converter.printCreatedClasses(true);
   }
 
 }

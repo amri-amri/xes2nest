@@ -1,31 +1,14 @@
 package org.example.classFactories;
 
 import de.uni_trier.wi2.procake.data.model.Model;
-import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 
+/**
+ * Factory used to create procake classes for keys with the type 'string'.
+ */
 public class LiteralClassFactory extends UnnaturallyNestedClassFactory{
 
-    private AggregateClass syntaxClass;
-    private final String CLASS_NAME = "XESLiteralClass";
-
     public LiteralClassFactory(Model model) {
-        this.model = model;
-        postfix = "LiteralClass";
-        createOrGetSyntaxClass();
-    }
-
-    private void createOrGetSyntaxClass() {
-        syntaxClass = model.getClass(CLASS_NAME);
-        if (syntaxClass == null) {
-            syntaxClass = (AggregateClass) getBaseClass().createSubclass(CLASS_NAME);
-            syntaxClass.updateAttributeType("value",model.getStringSystemClass());
-            syntaxClass.setAbstract(false);
-            syntaxClass.finishEditing();
-        }
-    }
-    @Override
-    AggregateClass getSyntaxClass() {
-        return syntaxClass;
+        super("LiteralClass","XESLiteralClass", model, model.getStringSystemClass());
     }
 
 }
