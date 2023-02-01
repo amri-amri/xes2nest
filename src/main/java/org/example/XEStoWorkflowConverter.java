@@ -194,6 +194,7 @@ public class XEStoWorkflowConverter {
     }
   }
 
+  @Deprecated
   public void addLifecycleStandardEdges(){
     // state -> transition
     addEdges(keyHasStringValueFilter("lifecycle:state","Ready"),
@@ -414,6 +415,7 @@ public class XEStoWorkflowConverter {
 
   //print
 
+  @Deprecated //This function was only used for the development the actual functionality of the converter
   public void print() throws Exception {
     printXESObject(log);
   }
