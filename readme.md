@@ -20,7 +20,7 @@ Möchte man Retrieval mit den Workflows betreiben, sollte man also geeignete Äh
 ### Event
 Ein Event wird zu einem `NESTTaskNodeObject` konvertiert. Alle Attribute werden in einer `XESEventClass` gespeichert, welche als **Semantic Descriptor** des `NESTTaskNodeObject`s dient.
 
-Die Edges werden per `setEdges`-Funktionen gesetzt (siehe [Funktionen](#Funktionen)).
+Die Edges werden per `setEdges`-Funktionen gesetzt (siehe [Funktionen](#funktionen)).
 ### Trace
 Ein Trace wird zu einem `NESTWorkflowObject` konvertiert. Ein Workflow (-Graph) benötigt immer genau einen `NESTWorkflowNodeObject`, in dem Trace-Infos (-Attribute) gespeichert werden.
 ### Log
@@ -33,7 +33,7 @@ Ein Log wird zu einem `NESTWorkflowObject`-Array konvertiert.
 |`void addGlobalTraceAttributes()`|Fügt jedem Trace alle globalen Trace-Attribute und deren Standartwert hinzu, sofern das Trace-Attribut noch nicht im Trace enthalten ist.|
 |`void addGlobalEventAttributes()`|Fügt jedem Event alle globalen Event-Attribute und deren Standartwert hinzu, sofern das Event-Attribut noch nicht im Event enthalten ist.|
 |`void setEdgesByDocumentOrder()`|Im den jeweiligen Workflows werden die Kanten von TaskNode zu TaskNode anhand der Reihenfolge der korrespondierenden Events im Trace gesetzt.|
-|`void addEdges(Filter f1, Filter f2)`|In jedem Trace wird von jedem Event `xEvent1`, für das [`f1`](#d)`.filter(xEvent1)==true` ist,  zu jedem Event `xEvent2`, für das [`f2`](#d)`.filter(xEvent2)==true` ist, eine Kante gesetzt.|
+|`void addEdges(Filter f1, Filter f2)`|In jedem Trace wird von jedem Event `xEvent1`, für das [`f1`](#d)`.filter(xEvent1)==true` ist,  zu jedem Event `xEvent2`, für das [`f2`](#private-interface-filter)`.filter(xEvent2)==true` ist, eine Kante gesetzt.|
 |`void removeEdges(Filter f1, Filter f2)`|In jedem Trace wird von jedem Event `xEvent1`, für das [`f1`](#d)`.filter(xEvent1)==true` ist,  zu jedem Event `xEvent2`, für das [`f2`](#d)`.filter(xEvent2)==true` ist, eine Kante gelöscht.|
 |`static Filter keyHasStringValueFilter(String key, String value)`|Gibt einen [Filter](#d), der zur Überprüfung von Evxistenz von Event-Attributen und deren Wert dient.|
 |`NESTWorkflowObject[] getWorkflows()`|Liefert das Array der konvertierten Workflows.|
