@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class ListClassFactory extends NaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "ListClass";
+
     public ListClassFactory(Model model) {
-        super("ListClass","XESListClass", model, model.getListSystemClass());
+        super(POSTFIX,"XESListClass", model, model.getListSystemClass());
     }
 }

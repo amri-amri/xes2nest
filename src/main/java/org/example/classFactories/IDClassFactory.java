@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class IDClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "IDClass";
+
     public IDClassFactory(Model model) {
-        super("IDClass","XESIDClass", model, model.getStringSystemClass());
+        super(POSTFIX,"XESIDClass", model, model.getStringSystemClass());
     }
 }

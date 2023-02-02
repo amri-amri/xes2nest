@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class DurationClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "DurationClass";
+
     public DurationClassFactory(Model model) {
-        super("DurationClass","XESDurationClass", model, model.getIntegerSystemClass());
+        super(POSTFIX,"XESDurationClass", model, model.getIntegerSystemClass());
     }
 }

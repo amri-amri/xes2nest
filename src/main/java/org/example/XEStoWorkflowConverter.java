@@ -15,10 +15,8 @@ import de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowBuilderI
 import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import org.deckfour.xes.classification.XEventClassifier;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
@@ -70,8 +68,6 @@ public class XEStoWorkflowConverter {
   {
     return log.size();
   }
-
-
 
   //Adding the ProCAKE-Classes to the Model
 
@@ -556,10 +552,22 @@ public class XEStoWorkflowConverter {
         for (Map.Entry<String, String> entry: factory.getNamesOfCreatedClasses().entrySet()) {
           StringBuilder str = new StringBuilder();
           if (printKey) str.append(entry.getKey()).append(": ");
-          str.append(entry.getValue()).append("\n");
+          str.append(entry.getValue());
           System.out.println(str);
         }
       }
+  }
+  /**
+   * Returns the name of all the classes matching keys that were created during converting the XES-File.
+   */
+  public Collection<String> getCreatedClasses() {
+    Collection<String> classes = new ArrayList<>();
+    for (ClassFactory factory: factories.values()) {
+      for (Map.Entry<String, String> entry : factory.getNamesOfCreatedClasses().entrySet()) {
+        classes.add(entry.getValue());
+      }
+    }
+    return classes;
   }
 
   /**
@@ -572,7 +580,7 @@ public class XEStoWorkflowConverter {
   }
 
   /**
-   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the matching class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
    */
   private void initializeFactories() {
     factories = new HashMap<>();

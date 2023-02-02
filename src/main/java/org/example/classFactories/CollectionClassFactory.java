@@ -7,8 +7,10 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class CollectionClassFactory extends NaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "CollectionClass";
+
     public CollectionClassFactory(Model model) {
-        super("CollectionClass","XESCollectionClass", model, model.getCollectionSystemClass());
+        super(POSTFIX,"XESCollectionClass", model, model.getCollectionSystemClass());
     }
 
 }

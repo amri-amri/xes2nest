@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class DiscreteClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "DiscreteClass";
+
     public DiscreteClassFactory(Model model) {
-        super("DiscreteClass","XESDiscreteClass", model, model.getIntegerSystemClass());
+        super(POSTFIX,"XESDiscreteClass", model, model.getIntegerSystemClass());
     }
 }

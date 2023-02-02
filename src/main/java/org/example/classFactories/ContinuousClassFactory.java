@@ -7,8 +7,10 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class ContinuousClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "ContinuousClass";
+
     public ContinuousClassFactory(Model model) {
-        super("ContinuousClass","XESContinuousClass", model, model.getDoubleSystemClass());
+        super(POSTFIX,"XESContinuousClass", model, model.getDoubleSystemClass());
     }
 
 }

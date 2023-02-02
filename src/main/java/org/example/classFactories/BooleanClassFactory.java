@@ -7,8 +7,10 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class BooleanClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "BooleanClass";
+
     public BooleanClassFactory(Model model) {
-        super("BooleanClass","XESBooleanClass", model, model.getBooleanSystemClass());
+        super(POSTFIX,"XESBooleanClass", model, model.getBooleanSystemClass());
     }
 
 }

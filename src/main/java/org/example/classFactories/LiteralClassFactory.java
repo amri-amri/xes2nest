@@ -7,8 +7,10 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class LiteralClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "LiteralClass";
+
     public LiteralClassFactory(Model model) {
-        super("LiteralClass","XESLiteralClass", model, model.getStringSystemClass());
+        super(POSTFIX,"XESLiteralClass", model, model.getStringSystemClass());
     }
 
 }

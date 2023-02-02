@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class TimestampClassFactory extends UnnaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "TimestampClass";
+
     public TimestampClassFactory(Model model) {
-        super("TimestampClass","XESTimestampClass", model, model.getTimestampSystemClass());
+        super(POSTFIX,"XESTimestampClass", model, model.getTimestampSystemClass());
     }
 }

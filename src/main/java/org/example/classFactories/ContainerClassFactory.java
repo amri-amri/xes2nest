@@ -7,7 +7,9 @@ import de.uni_trier.wi2.procake.data.model.Model;
  */
 public class ContainerClassFactory extends NaturallyNestedClassFactory{
 
+    public static final String POSTFIX = "ContainerClass";
+
     public ContainerClassFactory(Model model) {
-        super("ContainerClass","XESContainerClass", model, model.getSetSystemClass());
+        super(POSTFIX,"XESContainerClass", model, model.getSetSystemClass());
     }
 }
