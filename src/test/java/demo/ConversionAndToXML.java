@@ -3,11 +3,13 @@ package demo;
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.ModelFactory;
+import de.uni_trier.wi2.procake.data.object.DataObject;
 import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
-import de.uni_trier.wi2.procake.utils.nestworkfloweditor.NESTWorkflowEditor;
+import de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory;
+import de.uni_trier.wi2.procake.data.objectpool.WriteableObjectPool;
 import org.example.XEStoWorkflowConverter;
 
-public class ConversionAndNESTWorkflowEditorDemo {
+public class ConversionAndToXML {
 
     public static void main(String[] args) throws Exception {
         CakeInstance.start();
@@ -20,8 +22,13 @@ public class ConversionAndNESTWorkflowEditorDemo {
 
         converter.setEdgesByDocumentOrder();
 
-        NESTWorkflowObject lifecycle = converter.getWorkflows()[0];
+        NESTWorkflowObject[] workflows = converter.getWorkflows();
 
-        new NESTWorkflowEditor(lifecycle);
+        WriteableObjectPool pool = ObjectPoolFactory.newObjectPool();
+
+        for (NESTWorkflowObject workflow : workflows) {
+            pool.store(workflow);
+        }
+        System.out.println(pool.toXML());
     }
 }
