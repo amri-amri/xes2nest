@@ -3,11 +3,10 @@ package demo;
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.ModelFactory;
-import de.uni_trier.wi2.procake.data.object.DataObject;
 import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
 import de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory;
 import de.uni_trier.wi2.procake.data.objectpool.WriteableObjectPool;
-import org.example.XEStoWorkflowConverter;
+import de.uni_trier.wi2.XEStoWorkflowConverter;
 
 import java.io.File;
 import java.io.FileWriter;

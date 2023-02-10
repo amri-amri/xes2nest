@@ -1,5 +1,7 @@
-package org.example;
+package de.uni_trier.wi2;
 
+import de.uni_trier.wi2.classFactories.*;
+import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.base.SetClass;
@@ -25,8 +27,7 @@ import org.deckfour.xes.factory.XFactoryNaiveImpl;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.*;
-import org.example.classFactories.*;
-import org.example.namingUtils.Classnames;
+import de.uni_trier.wi2.classFactories.*;
 
 public class XEStoWorkflowConverter {
 
@@ -399,7 +400,7 @@ public class XEStoWorkflowConverter {
   }
 
   /**
-   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+   * Initializes the factories-map and adds the Factory Classes of {@link de.uni_trier.wi2.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
    */
   private void initializeFactories() {
     factories = new HashMap<>();

@@ -1,10 +1,10 @@
-package org.example.classFactories;
+package de.uni_trier.wi2.classFactories;
 
+import de.uni_trier.wi2.namingUtils.Classnames;
+import de.uni_trier.wi2.namingUtils.KeyNameConverter;
 import de.uni_trier.wi2.procake.data.model.DataClass;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.Model;
-import org.example.namingUtils.Classnames;
-import org.example.namingUtils.KeyNameConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +23,7 @@ public abstract class ClassFactory {
 
     /**
      * String that the factory appends to the key to create a name of the new key class.
-     * Should be closely related to the {@link org.example.classFactories.ClassFactory#type_CLASS_NAME}.
+     * Should be closely related to the {@link ClassFactory#type_CLASS_NAME}.
      */
     private final String POSTFIX;
 
@@ -97,7 +97,7 @@ public abstract class ClassFactory {
     }
 
     /**
-     * initializes the {@link org.example.classFactories.ClassFactory#typeClass} and should therefore be called in the constructor.
+     * initializes the {@link ClassFactory#typeClass} and should therefore be called in the constructor.
      * The user has the possibility to update the attributes of the baseClass to classes that fit the specific use case.
       * @param updates updates that should be performed with the attribute name as key and the new type of the attribute as value.
      */

@@ -5,7 +5,7 @@ import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.ModelFactory;
 import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
 import de.uni_trier.wi2.procake.utils.nestworkfloweditor.NESTWorkflowEditor;
-import org.example.XEStoWorkflowConverter;
+import de.uni_trier.wi2.XEStoWorkflowConverter;
 
 public class ConversionAndNESTWorkflowEditorDemo {
 

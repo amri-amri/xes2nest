@@ -1,9 +1,10 @@
-package org.example.utils;
+package de.uni_trier.wi2.namingUtils;
 
+import de.uni_trier.wi2.classFactories.*;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.*;
-import org.example.classFactories.*;
+import de.uni_trier.wi2.classFactories.*;
 
 import java.io.File;
 import java.util.ArrayList;

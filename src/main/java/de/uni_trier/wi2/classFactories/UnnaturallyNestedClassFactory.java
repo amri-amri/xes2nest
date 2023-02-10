@@ -1,9 +1,9 @@
-package org.example.classFactories;
+package de.uni_trier.wi2.classFactories;
 
+import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.data.model.DataClass;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
-import org.example.namingUtils.Classnames;
 
 /**
  * Class that provides a redefined baseclass for Factories that are used to create classes for atomic XES attribute types.

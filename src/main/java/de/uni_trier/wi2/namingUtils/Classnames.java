@@ -1,4 +1,4 @@
-package org.example.namingUtils;
+package de.uni_trier.wi2.namingUtils;
 
 public abstract class Classnames{
 
