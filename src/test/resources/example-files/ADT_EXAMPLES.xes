@@ -1209,8 +1209,7 @@
    <string key="Allgemeiner_Leistungszustand" value="0"/>
   </event>
  </trace>
- 
- xp<trace>
+ <trace>
   <string key="concept:name" value="814919"/>
   <date key="time:timestamp" value="1984-05-28T10:00:00.000+00:00"/>
   <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>
@@ -6559,9 +6558,6 @@ Tumorresektion links okzipital am 22.11.19 (UKM, Neuroch.)"/>
    <string key="Allgemeiner_Leistungszustand" value="U"/>
   </event>
  </trace>
- 
- 
- 
  <trace>
   <string key="concept:name" value="1117857"/>
   <date key="time:timestamp" value="1944-03-24T10:00:00.000+00:00"/>
