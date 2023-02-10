@@ -9,6 +9,9 @@ import de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory;
 import de.uni_trier.wi2.procake.data.objectpool.WriteableObjectPool;
 import org.example.XEStoWorkflowConverter;
 
+import java.io.File;
+import java.io.FileWriter;
+
 public class ConversionAndToXML {
 
     public static void main(String[] args) throws Exception {
@@ -29,6 +32,12 @@ public class ConversionAndToXML {
         for (NESTWorkflowObject workflow : workflows) {
             pool.store(workflow);
         }
-        System.out.println(pool.toXML());
+        String xml = pool.toXML();
+        System.out.println(xml);
+
+        File file = new File("src/test/resources/output/casebase.xml");
+        FileWriter fw = new FileWriter(file);
+        fw.write(xml);
+        fw.close();
     }
 }
