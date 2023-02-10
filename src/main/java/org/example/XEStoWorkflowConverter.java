@@ -15,10 +15,8 @@ import de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowBuilderI
 import java.io.File;
 import java.lang.reflect.Method;
 import java.sql.Timestamp;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import org.deckfour.xes.classification.XEventClassifier;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
@@ -33,7 +31,9 @@ public class XEStoWorkflowConverter {
 
   final private Model model;
   final private XLog log;
-  final private boolean[][][] edges;
+  private List<List<Set<Integer>>> edges;
+
+  private boolean defaultEdges = false;
 
   /**
    * Map that contains the factories used to create custom classes for each type and key combo of XES attributes.
@@ -47,18 +47,9 @@ public class XEStoWorkflowConverter {
     XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
     XesXmlParser xmlParser = new XesXmlParser(xFactory);
     log = xmlParser.parse(new File(filepath)).get(0);
-
-    edges = new boolean[log.size()][][];
-    for (int trace = 0; trace < log.size(); trace++) {
-      int numOfEvents = log.get(trace).size();
-      edges[trace] = new boolean[numOfEvents][numOfEvents];
-
-      for (int e1 = 0; e1<numOfEvents; e1++) for (int e2 = 0; e2<numOfEvents; e2++) {
-        edges[trace][e1][e2] = false;
-      }
-    }
+    edges = null;
     initializeFactories();
-    addEventClass(model);
+    addEventClass();
   }
 
 
@@ -110,7 +101,7 @@ public class XEStoWorkflowConverter {
 
   }
 
-  private static void addEventClass(Model model){
+  private void addEventClass(){
     //event class
     SetClass eventClass = (SetClass) model.getSetSystemClass().createSubclass(Classnames.EVENT);
     eventClass.setElementClass(model.getClass(Classnames.BASE));
@@ -148,13 +139,23 @@ public class XEStoWorkflowConverter {
   //Setting Edges
 
   public void setEdgesByDocumentOrder(){
-    for (int t = 0; t<log.size(); t++){
-      int numOfEvents = log.get(t).size();
-      for (int e = 0; e<numOfEvents-1; e++) edges[t][e][e+1] = true;
+    if (defaultEdges) {
+      System.out.println("Edges already added!");
+      return;
     }
+    defaultEdges = true;
+    if (edges != null) {
+      for (int t = 0; t<log.size(); t++){
+        int numOfEvents = log.get(t).size();
+        for (int e = 0; e<numOfEvents-1; e++) edges.get(t).get(e).add(e + 1);
+        }
+      }
   }
 
   public void addEdges(Filter f1, Filter f2){
+    if (edges == null) {
+      initEdges();
+    }
     for (int t = 0; t<log.size(); t++){
       XTrace trace = log.get(t);
       int numOfEvents = trace.size();
@@ -163,9 +164,7 @@ public class XEStoWorkflowConverter {
         if ( f1.filter(trace.get(e1)) ) {
           for (int e2 = 0; e2<numOfEvents; e2++) {
             if ( f2.filter(trace.get(e2)) ) {
-
-              edges[t][e1][e2] = true;
-
+              edges.get(t).get(e1).add(e2);
             }
           }
         }
@@ -183,14 +182,28 @@ public class XEStoWorkflowConverter {
         if ( f1.filter(trace.get(e1)) ) {
           for (int e2 = 0; e2<numOfEvents; e2++) {
             if ( f2.filter(trace.get(e2)) ) {
-
-              edges[t][e1][e2] = false;
-
+              edges.get(t).get(e1).remove(e2);
             }
           }
         }
       }
 
+    }
+  }
+
+  private void initEdges() {
+    edges = new ArrayList(log.size());
+    for (int trace = 0; trace < log.size(); trace++) {
+      int numOfEvents = log.get(trace).size();
+      edges.add(trace, new ArrayList(numOfEvents));
+      List<Set<Integer>> edgesOfTrace = edges.get(trace);
+      for (int i = 0; i<numOfEvents; i++) {
+        edgesOfTrace.add(i, new TreeSet<>());
+        Set<Integer> current = edgesOfTrace.get(i);
+        if (defaultEdges && i < numOfEvents - 1) {
+          current.add(i + 1);
+        }
+      }
     }
   }
 
@@ -315,11 +328,20 @@ public class XEStoWorkflowConverter {
     for (int e = 0; e<size; e++){
       events[e] = traceModifier.insertNewTaskNode(getEventSet(xTrace.get(e)));
     }
-
-    for (int e1 = 0; e1<size; e1++) for (int e2 = 0; e2<size; e2++) if (edges[index][e1][e2]){
-      traceModifier.insertNewControlflowEdge(events[e1],events[e2],null);
+    if (edges == null) {
+      if (defaultEdges) {
+        for (int e1 = 0; e1<size - 1; e1++) {
+          traceModifier.insertNewControlflowEdge(events[e1],events[e1 + 1],null);
+        }
+      }
     }
-
+    else {
+      for (int e1 = 0; e1<size; e1++) {
+        for (int e2: edges.get(index).get(e1)){
+          traceModifier.insertNewControlflowEdge(events[e1],events[e2],null);
+        }
+      }
+    }
     return workflow;
   }
 
