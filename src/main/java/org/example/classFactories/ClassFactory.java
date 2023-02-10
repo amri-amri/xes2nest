@@ -3,7 +3,8 @@ package org.example.classFactories;
 import de.uni_trier.wi2.procake.data.model.DataClass;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.Model;
-import org.example.utils.KeyNameConverter;
+import org.example.namingUtils.Classnames;
+import org.example.namingUtils.KeyNameConverter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,7 +41,7 @@ public abstract class ClassFactory {
      */
     private final Map<String, String> createdClassNames = new HashMap<>();
 
-    private final String BASE = "XESBaseClass";
+    private final String BASE = Classnames.BASE;
 
 
     private ClassFactory(String postfix, String className, Model model) {

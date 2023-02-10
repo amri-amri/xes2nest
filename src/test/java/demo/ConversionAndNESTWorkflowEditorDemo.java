@@ -20,6 +20,9 @@ public class ConversionAndNESTWorkflowEditorDemo {
 
         converter.setEdgesByDocumentOrder();
 
+        converter.addGlobalTraceAttributes();
+        converter.addGlobalEventAttributes();
+
         NESTWorkflowObject lifecycle = converter.getWorkflows()[0];
 
         new NESTWorkflowEditor(lifecycle);

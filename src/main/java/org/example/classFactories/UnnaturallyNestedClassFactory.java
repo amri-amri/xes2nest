@@ -3,6 +3,7 @@ package org.example.classFactories;
 import de.uni_trier.wi2.procake.data.model.DataClass;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
+import org.example.namingUtils.Classnames;
 
 /**
  * Class that provides a redefined baseclass for Factories that are used to create classes for atomic XES attribute types.
@@ -11,7 +12,7 @@ import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
  */
 public abstract class UnnaturallyNestedClassFactory extends ClassFactory{
 
-    private static final String UNNATURALLY_NESTED = "XESUnnaturallyNestedClass";
+    private static final String UNNATURALLY_NESTED = Classnames.UNNATURALLY_NESTED;
 
     public UnnaturallyNestedClassFactory(String postfix, String className, Model model, DataClass dataClass) {
         super(postfix, className, model, dataClass);

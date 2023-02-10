@@ -3,6 +3,7 @@ package org.example.classFactories;
 import de.uni_trier.wi2.procake.data.model.DataClass;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
+import org.example.namingUtils.Classnames;
 
 /**
  * Class that provides a redefined baseclass for Factories that are used to create classes for XES collection attribute types.
@@ -11,7 +12,7 @@ import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
  */
 public abstract class NaturallyNestedClassFactory extends ClassFactory{
 
-    private static final String NATURALLY_NESTED = "XESNaturallyNestedClass";
+    private static final String NATURALLY_NESTED = Classnames.NATURALLY_NESTED;
 
     public NaturallyNestedClassFactory(String postfix, String className, Model model, DataClass dataClass) {
         super(postfix, className, model, dataClass);

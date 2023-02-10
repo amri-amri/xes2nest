@@ -25,6 +25,9 @@ public class ConversionAndToXML {
 
         converter.setEdgesByDocumentOrder();
 
+        converter.addGlobalTraceAttributes();
+        converter.addGlobalEventAttributes();
+
         NESTWorkflowObject[] workflows = converter.getWorkflows();
 
         WriteableObjectPool pool = ObjectPoolFactory.newObjectPool();

@@ -26,6 +26,7 @@ import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.*;
 import org.example.classFactories.*;
+import org.example.namingUtils.Classnames;
 
 public class XEStoWorkflowConverter {
 
@@ -62,8 +63,6 @@ public class XEStoWorkflowConverter {
   }
 
 
-
-
   //Getter
 
   public int getSize()
@@ -71,53 +70,6 @@ public class XEStoWorkflowConverter {
   {
     return log.size();
   }
-
-
-
-  //Adding the ProCAKE-Classes to the Model
-
-  private abstract static class Classnames{
-
-    private static final String EVENT = "XESEventClass";
-
-
-    private static final String BASE = "XESBaseClass";
-
-
-    private static final String UNNATURALLY_NESTED = "XESUnnaturallyNestedClass";
-
-    private static final String LITERAL = "XESLiteralClass";
-
-    private static final String BOOLEAN = "XESBooleanClass";
-
-    private static final String CONTINUOUS = "XESContinuousClass";
-
-    private static final String DISCRETE = "XESDiscreteClass";
-
-    private static final String TIMESTAMP = "XESTimestampClass";
-
-    private static final String DURATION = "XESDurationClass";
-
-    private static final String ID = "XESIDClass";
-
-
-    private static final String NATURALLY_NESTED = "XESNaturallyNestedClass";
-
-    private static final String COLLECTION = "XESCollectionClass";
-
-    private static final String LIST = "XESListClass";
-
-    private static final String CONTAINER = "XESContainerClass";
-
-  }
-
-  private static void addEventClass(Model model){
-    //event class
-    SetClass eventClass = (SetClass) model.getSetSystemClass().createSubclass(Classnames.EVENT);
-    eventClass.setElementClass(model.getClass(Classnames.BASE));
-    eventClass.finishEditing();
-  }
-
 
 
   //Adding Global Attributes
@@ -413,6 +365,57 @@ public class XEStoWorkflowConverter {
   }
 
 
+  //Classes
+
+  private static void addEventClass(Model model){
+    //event class
+    SetClass eventClass = (SetClass) model.getSetSystemClass().createSubclass(Classnames.EVENT);
+    eventClass.setElementClass(model.getClass(Classnames.BASE));
+    eventClass.finishEditing();
+  }
+
+  /**
+   * Prints the name of all the classes that were created during converting the XES-File.
+   * @param printKey If True, in Addition to each class name the key for which the class was created gets returned as well.
+   */
+  public  void printCreatedClasses(Boolean printKey) {
+      for (ClassFactory factory: factories.values()) {
+        for (Map.Entry<String, String> entry: factory.getNamesOfCreatedClasses().entrySet()) {
+          StringBuilder str = new StringBuilder();
+          if (printKey) str.append(entry.getKey()).append(": ");
+          str.append(entry.getValue()).append("\n");
+          System.out.println(str);
+        }
+      }
+  }
+
+  /**
+   * Adds new factory to the Factory map. Overwrites factory in map if Key already exists.
+   * @param key Should be the classname of the XES attribute type implementation for which the Factory should be used.
+   * @param factory Factory for creating classes of a certain XES type.
+   */
+  private void addFactory(String key, ClassFactory factory) {
+    factories.put(key, factory);
+  }
+
+  /**
+   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+   */
+  private void initializeFactories() {
+    factories = new HashMap<>();
+    addFactory("XAttributeLiteralImpl", new LiteralClassFactory(model));
+    addFactory("XAttributeBooleanImpl", new BooleanClassFactory(model));
+    addFactory("XAttributeContinuousImpl", new ContinuousClassFactory(model));
+    addFactory("XAttributeDiscreteImpl", new DiscreteClassFactory(model));
+    addFactory("XAttributeTimestampImpl", new TimestampClassFactory(model));
+    addFactory("XAttributeDurationImpl", new DurationClassFactory(model));
+    addFactory("XAttributeIDImpl", new IDClassFactory(model));
+    addFactory("XAttributeContainerImpl", new ContainerClassFactory(model));
+    addFactory("XAttributeCollectionImpl", new CollectionClassFactory(model));
+    addFactory("XAttributeListImpl", new ListClassFactory(model));
+  }
+
+
 
   //print
 
@@ -505,7 +508,10 @@ public class XEStoWorkflowConverter {
           printXExtension((XExtension) o);
           return;
         }
-        if (o instanceof XEventClassifier) return;
+        if (o instanceof XEventClassifier) {
+          printXClassifier((XEventClassifier) o);
+          return;
+        }
         throw new Exception("Class " + o.getClass().getSimpleName() + " not recognized");
     }
   }
@@ -547,47 +553,5 @@ public class XEStoWorkflowConverter {
   private static void printXClassifier(XEventClassifier o){
     System.out.println(o.name());
     //TODO more information
-  }
-
-
-  /**
-   * Prints the name of all the classes that were created during converting the XES-File.
-   * @param printKey If True, in Addition to each class name the key for which the class was created gets returned as well.
-   */
-  public  void printCreatedClasses(Boolean printKey) {
-      for (ClassFactory factory: factories.values()) {
-        for (Map.Entry<String, String> entry: factory.getNamesOfCreatedClasses().entrySet()) {
-          StringBuilder str = new StringBuilder();
-          if (printKey) str.append(entry.getKey()).append(": ");
-          str.append(entry.getValue()).append("\n");
-          System.out.println(str);
-        }
-      }
-  }
-
-  /**
-   * Adds new factory to the Factory map. Overwrites factory in map if Key already exists.
-   * @param key Should be the classname of the XES attribute type implementation for which the Factory should be used.
-   * @param factory Factory for creating classes of a certain XES type.
-   */
-  private void addFactory(String key, ClassFactory factory) {
-    factories.put(key, factory);
-  }
-
-  /**
-   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
-   */
-  private void initializeFactories() {
-    factories = new HashMap<>();
-    addFactory("XAttributeLiteralImpl", new LiteralClassFactory(model));
-    addFactory("XAttributeBooleanImpl", new BooleanClassFactory(model));
-    addFactory("XAttributeContinuousImpl", new ContinuousClassFactory(model));
-    addFactory("XAttributeDiscreteImpl", new DiscreteClassFactory(model));
-    addFactory("XAttributeTimestampImpl", new TimestampClassFactory(model));
-    addFactory("XAttributeDurationImpl", new DurationClassFactory(model));
-    addFactory("XAttributeIDImpl", new IDClassFactory(model));
-    addFactory("XAttributeContainerImpl", new ContainerClassFactory(model));
-    addFactory("XAttributeCollectionImpl", new CollectionClassFactory(model));
-    addFactory("XAttributeListImpl", new ListClassFactory(model));
   }
 }

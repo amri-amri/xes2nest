@@ -1,4 +1,4 @@
-package org.example.utils;
+package org.example.namingUtils;
 
 public class KeyNameConverter { //TODO Come up with naming conventions
     /**
