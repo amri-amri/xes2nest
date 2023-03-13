@@ -1,4 +1,4 @@
-package org.example;
+package de.uni_trier.wi2;
 
 import org.deckfour.xes.model.XEvent;
 

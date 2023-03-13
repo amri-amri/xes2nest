@@ -1,4 +1,4 @@
-package org.example;
+package de.uni_trier.wi2;
 
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
@@ -19,7 +19,7 @@ import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.impl.*;
-import org.example.classFactories.*;
+import de.uni_trier.wi2.classFactories.*;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Converter that converts a {@link org.example.XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
+ * Converter that converts a {@link de.uni_trier.wi2.XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
  * In the process of conversion, for each attribute key in the Events of the graph, a matching class is created.
  * The converter is able to print a list of all classes that were ever created by it.
  * @author Eric Brake
@@ -242,7 +242,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
     }
 
     /**
-     * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+     * Initializes the factories-map and adds the Factory Classes of {@link de.uni_trier.wi2.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
      */
     private void initializeFactories() {
         factories = new HashMap<>();

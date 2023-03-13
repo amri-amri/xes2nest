@@ -1,4 +1,4 @@
-package org.example;
+package de.uni_trier.wi2;
 
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.id.XID;
@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of the {@link org.example.XESGraph} Interface.
+ * Implementation of the {@link de.uni_trier.wi2.XESGraph} Interface.
  * In this implementation, on creation, event and trace attributes can be provided.
  * They are than added to all events that do not already have matching keys and to the trace attributes respectively.
  * This should be used to make sure that all event and trace attributes have all global attributes provided in the log.
@@ -33,7 +33,7 @@ public class XESTraceGraph implements XESGraph {
 
     /**
      * True if edges by document order should be added, false else.
-     * Makes initialization of {@link org.example.XESTraceGraph#edges} unnecessary for internal representation if no further edges are required.
+     * Makes initialization of {@link de.uni_trier.wi2.XESTraceGraph#edges} unnecessary for internal representation if no further edges are required.
      */
     private boolean defaultEdges = false;
 
@@ -121,9 +121,9 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * Creates a map that can be used to initialize {@link org.example.XESTraceGraph#edges}.
-     * If {@link org.example.XESTraceGraph#defaultEdges} is true, the map is initialized with the edges implied by {@link org.example.XESTraceGraph#defaultEdges}.
-     * If {@link org.example.XESTraceGraph#defaultEdges} is false, the map is empty
+     * Creates a map that can be used to initialize {@link de.uni_trier.wi2.XESTraceGraph#edges}.
+     * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is true, the map is initialized with the edges implied by {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges}.
+     * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is false, the map is empty
      *
      * @return an initialized map.
      */
@@ -134,7 +134,7 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * Adds a new edge to {@link org.example.XESTraceGraph#edges}.
+     * Adds a new edge to {@link de.uni_trier.wi2.XESTraceGraph#edges}.
      *
      * @param from ID of the event that should be the beginning of the edge.
      * @param to   ID of the event that should be the end of the edge.
@@ -148,8 +148,8 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * If existing, removes an edge from {@link org.example.XESTraceGraph#edges}.
-     * If the edge does not exist, {@link org.example.XESTraceGraph#edges} stays unchanged.
+     * If existing, removes an edge from {@link de.uni_trier.wi2.XESTraceGraph#edges}.
+     * If the edge does not exist, {@link de.uni_trier.wi2.XESTraceGraph#edges} stays unchanged.
      *
      * @param from ID of the event that is the beginning of the edge.
      * @param to   ID of the event that is the end of the edge.

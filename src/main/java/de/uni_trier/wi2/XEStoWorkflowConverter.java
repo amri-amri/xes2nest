@@ -29,6 +29,7 @@ import org.deckfour.xes.model.*;
 import org.deckfour.xes.model.impl.*;
 import de.uni_trier.wi2.classFactories.*;
 
+@Deprecated
 public class XEStoWorkflowConverter {
 
   final private static DataObjectUtils utils = new DataObjectUtils();
