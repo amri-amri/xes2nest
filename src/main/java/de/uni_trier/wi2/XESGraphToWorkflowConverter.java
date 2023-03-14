@@ -108,8 +108,18 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
      */
     private void addEventClass() {
         //event class
-        SetClass eventClass = (SetClass) model.getSetSystemClass().createSubclass(EVENT);
-        eventClass.setElementClass(model.getClass(BASE));
+        SetClass eventClass = model.getClass(EVENT);
+        if (eventClass != null) return;
+        eventClass = (SetClass) model.getSetSystemClass().createSubclass(EVENT);
+        AggregateClass baseClass = model.getClass(BASE);
+        if (baseClass == null) {
+            baseClass = (AggregateClass) model.getAggregateSystemClass().createSubclass(BASE);
+            baseClass.addAttribute("key", model.getStringSystemClass());
+            baseClass.addAttribute("value", model.getDataSystemClass());
+            baseClass.setAbstract(true);
+            baseClass.finishEditing();
+        }
+        eventClass.setElementClass(baseClass);
         eventClass.finishEditing();
     }
 
