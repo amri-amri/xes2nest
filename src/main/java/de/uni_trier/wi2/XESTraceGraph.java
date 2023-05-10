@@ -89,9 +89,7 @@ public class XESTraceGraph implements XESGraph {
      * @param f2 Filter that is applied to find all events that should be endings of edges.
      */
     public void addEdges(Filter f1, Filter f2) {
-        if (edges == null) {
-            edges = createBaseMap();
-        }
+        if (edges == null) createBaseMap();
         Iterator<XEvent> fromIt = trace.stream().filter(f1::filter).iterator();
         List<XEvent> filteredTo = trace.stream().filter(f2::filter).collect(Collectors.toList());
         while (fromIt.hasNext()) {
@@ -109,7 +107,7 @@ public class XESTraceGraph implements XESGraph {
      * @param f2 Filter that is applied to find all events that are matching endings of edges.
      */
     public void removeEdges(Filter f1, Filter f2) {
-        if (edges == null) edges = createBaseMap();
+        if (edges == null) createBaseMap();
         Iterator<XEvent> fromIt = trace.stream().filter(f1::filter).iterator();
         List<XEvent> filteredTo = trace.stream().filter(f2::filter).collect(Collectors.toList());
         while (fromIt.hasNext()) {
@@ -121,16 +119,13 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * Creates a map that can be used to initialize {@link de.uni_trier.wi2.XESTraceGraph#edges}.
+     * Initializes {@link de.uni_trier.wi2.XESTraceGraph#edges}.
      * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is true, the map is initialized with the edges implied by {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges}.
      * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is false, the map is empty
-     *
-     * @return an initialized map.
      */
-    private Map<XID, Set<XID>> createBaseMap() {
-        Map<XID, Set<XID>> edges = new HashMap<>(size());
+    private void createBaseMap() {
+        edges = new HashMap<>(size());
         if (defaultEdges) addEdgesByDocumentOrder();
-        return edges;
     }
 
     /**
@@ -140,7 +135,7 @@ public class XESTraceGraph implements XESGraph {
      * @param to   ID of the event that should be the end of the edge.
      */
     private void addEdge(XID from, XID to) {
-        if (edges == null) edges = createBaseMap();
+        if (edges == null) createBaseMap();
         Set<XID> set = new TreeSet<>();
         Set<XID> existingSet = edges.putIfAbsent(from, set);
         set = (existingSet == null ? set : existingSet);
@@ -155,7 +150,7 @@ public class XESTraceGraph implements XESGraph {
      * @param to   ID of the event that is the end of the edge.
      */
     private void removeEdge(XID from, XID to) {
-        if (edges == null) edges = createBaseMap();
+        if (edges == null) createBaseMap();
         Set<XID> set = edges.get(from);
         if (set == null) return;
         set.remove(to);
@@ -204,7 +199,7 @@ public class XESTraceGraph implements XESGraph {
 
     @Override
     public Map<XID, Set<XID>> getEdges() {
-        if (edges == null) return createBaseMap();
+        if (edges == null) createBaseMap();
         return edges;
     }
 

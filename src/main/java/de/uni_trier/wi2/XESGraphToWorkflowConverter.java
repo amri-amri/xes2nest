@@ -25,6 +25,7 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Converter that converts a {@link de.uni_trier.wi2.XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
@@ -78,7 +79,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
     @Override
     public NESTWorkflowObject convert(XESGraph origin) {
         NESTWorkflowBuilder<NESTWorkflowObject> builder = new NESTWorkflowBuilderImpl<>();
-        NESTWorkflowObject workflow = builder.createNESTWorkflowGraphObject("T" + System.currentTimeMillis(), NESTWorkflowClass.CLASS_NAME, null);
+        NESTWorkflowObject workflow = builder.createNESTWorkflowGraphObject("T" + UUID.randomUUID(), NESTWorkflowClass.CLASS_NAME, null);
         NESTWorkflowModifier traceModifier = workflow.getModifier();
 
         //put trace attributes in WorkflowNode

@@ -15,7 +15,7 @@ import java.util.Collection;
  * @see <a href=”https://www.xes-standard.org>XES Standard</a>
  * @author Eric Brake
  */
-public class FileToXESGraphConverter implements OneWayConverter<File, Collection<XESGraph>> {
+public class FileToXESGraphConverter implements OneWayConverter<File, Collection<XESTraceGraph>> {
     /**
      * Converts a XES-File into a collection of {@link de.uni_trier.wi2.XESGraph}.
      * The conversion turns each trace of the XES-File into a XESGraph.
@@ -28,11 +28,11 @@ public class FileToXESGraphConverter implements OneWayConverter<File, Collection
      * @throws XESFileToGraphConversionException if parsing fails.
      */
     @Override
-    public Collection<XESGraph> convert(File origin) throws XESFileToGraphConversionException {
+    public Collection<XESTraceGraph> convert(File origin) throws XESFileToGraphConversionException {
         XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
         XesXmlParser xmlParser = new XesXmlParser(xFactory);
         XLog log;
-        Collection<XESGraph> graphs = new ArrayList<>();
+        Collection<XESTraceGraph> graphs = new ArrayList<>();
         try {
             log = xmlParser.parse(origin).get(0);
         } catch (Exception e) {
