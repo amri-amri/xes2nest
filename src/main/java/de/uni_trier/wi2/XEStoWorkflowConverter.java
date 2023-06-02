@@ -44,11 +44,15 @@ public class XEStoWorkflowConverter {
 
 
   public XEStoWorkflowConverter(final Model model, String filepath) throws Exception {
+    this(model, new File(filepath));
+  }
+
+  public XEStoWorkflowConverter(final Model model, File file) throws Exception {
     this.model = model;
 
     XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
     XesXmlParser xmlParser = new XesXmlParser(xFactory);
-    log = xmlParser.parse(new File(filepath)).get(0);
+    log = xmlParser.parse(file).get(0);
 
     edges = new boolean[log.size()][][];
     for (int trace = 0; trace < log.size(); trace++) {
