@@ -594,7 +594,7 @@ public class XEStoWorkflowConverter {
   }
 
   /**
-   * Initializes the factories-map and adds the Factory Classes of {@link org.example.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
+   * Initializes the factories-map and adds the Factory Classes of {@link de.uni_trier.wi2.classFactories} with the mating class names of the {@link org.deckfour.xes.model.impl} implementations as keys.
    */
   private void initializeFactories() {
     factories = new HashMap<>();
