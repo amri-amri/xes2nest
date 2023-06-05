@@ -1,4 +1,4 @@
-package demo;
+package demo.retrieval;
 
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;
