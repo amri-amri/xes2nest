@@ -4,8 +4,11 @@ import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.base.SetClass;
 import de.uni_trier.wi2.procake.data.model.nest.NESTWorkflowClass;
+import de.uni_trier.wi2.procake.data.object.DataObject;
 import de.uni_trier.wi2.procake.data.object.DataObjectUtils;
 import de.uni_trier.wi2.procake.data.object.base.AggregateObject;
+import de.uni_trier.wi2.procake.data.object.base.CollectionObject;
+import de.uni_trier.wi2.procake.data.object.base.ListObject;
 import de.uni_trier.wi2.procake.data.object.base.SetObject;
 import de.uni_trier.wi2.procake.data.object.nest.NESTTaskNodeObject;
 import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
@@ -22,10 +25,7 @@ import org.deckfour.xes.model.impl.*;
 import de.uni_trier.wi2.classFactories.*;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Converter that converts a {@link de.uni_trier.wi2.XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
@@ -138,15 +138,15 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
 
     /**
      * Converts the Attributes given in the AttributeMap and adds them to the given ProCAKE object.
-     * @param eventSet object to which the attributes should be added.
+     * @param eventCollection object to which the attributes should be added.
      * @param attributes attributes that should be added to the ProCAKE object.
      */
-    private void addAttributes(SetObject eventSet, XAttributeMap attributes) {
+    private void addAttributes(CollectionObject eventCollection, XAttributeMap attributes) {
         Set<String> attributeKeys = attributes.keySet();
 
         for (String key : attributeKeys) {
             XAttribute attribute = attributes.get(key);
-            eventSet.addValue(convertAttribute(attribute));
+            eventCollection.addValue(convertAttribute(attribute));
         }
     }
 
@@ -207,7 +207,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
                 return nObject;
             case "XAttributeListImpl":
                 XAttributeListImpl XESList = (XAttributeListImpl) attribute;
-                nObject.setAttributeValue("value", createAttributeSet(XESList));
+                nObject.setAttributeValue("value", createAttributeList(XESList));
                 return nObject;
             default:
                 throw new XESGraphToWorkflowConversionException("XAttribute class " + attributeClassName  + " is unknown.");
@@ -215,7 +215,18 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
     }
 
     /**
-     * Converts a given XES object that has attributes into a ProCAKE object.
+     * Converts a given XES object that has attributes into a ProCAKE List object.
+     * @param o Object to be converted.
+     * @return the converted object.
+     */
+    private ListObject createAttributeList(XAttributable o) {
+        ListObject attributeList = utils.createListObject();
+        addAttributes(attributeList, o.getAttributes());
+        return attributeList;
+    }
+
+    /**
+     * Converts a given XES object that has attributes into a ProCAKE Set object.
      * @param o Object to be converted.
      * @return the converted object.
      */
@@ -226,7 +237,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
     }
 
     /**
-     * Prints the name of all the classes that were created during converting the XES-File.
+     * Prints the name of all the classes that were created during converting the XES-File or String.
      *
      * @param printKey If True, in Addition to each class name the key for which the class was created gets returned as well.
      */
@@ -240,6 +251,27 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
                 System.out.println(str);
             }
         }
+    }
+
+    /**
+     * Returns a list of the names of all the classes that were created during converting the XES-File or String.
+     *
+     * @param addKey If True, in Addition to each class name the key for which the class was created gets returned as well.
+     */
+    public List<String> getCreatedClasses(boolean addKey) {
+        List<String> out = new ArrayList<>();
+        //System.out.println("Event Class: " + EVENT + "\n");
+
+        StringBuilder str;
+        for (ClassFactory factory : factories.values()) {
+            for (Map.Entry<String, String> entry : factory.getNamesOfCreatedClasses().entrySet()) {
+                str = new StringBuilder();
+                if (addKey) str.append(entry.getKey()).append(": ");
+                str.append(entry.getValue());
+                out.add(str.toString());
+            }
+        }
+        return out;
     }
 
     /**
