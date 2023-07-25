@@ -3,8 +3,8 @@ package de.uni_trier.wi2.classFactories;
 import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.namingUtils.KeyNameConverter;
 import de.uni_trier.wi2.procake.data.model.DataClass;
-import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.Model;
+import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 
 import java.util.HashMap;
 import java.util.Map;

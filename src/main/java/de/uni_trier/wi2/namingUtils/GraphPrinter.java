@@ -1,8 +1,8 @@
 package de.uni_trier.wi2.namingUtils;
 
+import de.uni_trier.wi2.XESGraph;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.model.*;
-import de.uni_trier.wi2.XESGraph;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

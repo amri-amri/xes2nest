@@ -4,7 +4,6 @@ import de.uni_trier.wi2.classFactories.*;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
 import org.deckfour.xes.in.XesXmlParser;
 import org.deckfour.xes.model.*;
-import de.uni_trier.wi2.classFactories.*;
 
 import java.io.File;
 import java.util.ArrayList;

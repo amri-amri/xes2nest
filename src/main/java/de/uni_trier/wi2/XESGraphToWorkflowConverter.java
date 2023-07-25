@@ -1,10 +1,10 @@
 package de.uni_trier.wi2;
 
+import de.uni_trier.wi2.classFactories.*;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.base.SetClass;
 import de.uni_trier.wi2.procake.data.model.nest.NESTWorkflowClass;
-import de.uni_trier.wi2.procake.data.object.DataObject;
 import de.uni_trier.wi2.procake.data.object.DataObjectUtils;
 import de.uni_trier.wi2.procake.data.object.base.AggregateObject;
 import de.uni_trier.wi2.procake.data.object.base.CollectionObject;
@@ -22,7 +22,6 @@ import org.deckfour.xes.model.XAttribute;
 import org.deckfour.xes.model.XAttributeMap;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.impl.*;
-import de.uni_trier.wi2.classFactories.*;
 
 import java.sql.Timestamp;
 import java.util.*;
