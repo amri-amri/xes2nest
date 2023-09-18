@@ -389,7 +389,7 @@ public class XEStoWorkflowConverter {
         return nObject;
       case "XAttributeTimestampImpl":
         XAttributeTimestampImpl XEStimestamp = (XAttributeTimestampImpl) attribute;
-        nObject.setAttributeValue("value",utils.createTimestampObject((new Timestamp(XEStimestamp.getValue().getTime())))); //TODO: Statt StringObject TimestampObject
+        nObject.setAttributeValue("value",utils.createTimestampObject((new Timestamp(XEStimestamp.getValue().getTime()))));
         nObject.setAttributeValue("attributes",getAttributeSet(XEStimestamp));
         return nObject;
       case "XAttributeIDImpl":

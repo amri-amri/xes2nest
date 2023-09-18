@@ -1,6 +1,7 @@
 package de.uni_trier.wi2;
 
 import de.uni_trier.wi2.classFactories.*;
+import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
 import de.uni_trier.wi2.procake.data.model.base.SetClass;
@@ -188,7 +189,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
                 return nObject;
             case "XAttributeTimestampImpl":
                 XAttributeTimestampImpl XESTimestamp = (XAttributeTimestampImpl) attribute;
-                nObject.setAttributeValue("value", utils.createTimestampObject((new Timestamp(XESTimestamp.getValue().getTime())))); //TODO: Statt StringObject TimestampObject
+                nObject.setAttributeValue("value", utils.createTimestampObject((new Timestamp(XESTimestamp.getValue().getTime()))));
                 nObject.setAttributeValue("attributes", createAttributeSet(XESTimestamp));
                 return nObject;
             case "XAttributeIDImpl":
@@ -257,19 +258,55 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
      *
      * @param addKey If True, in Addition to each class name the key for which the class was created gets returned as well.
      */
-    public List<String> getCreatedClasses(boolean addKey) {
-        List<String> out = new ArrayList<>();
+    public Map<String, List<String>> getCreatedClasses(boolean addKey) {
+        Map<String, List<String>> out = new HashMap<>();
         //System.out.println("Event Class: " + EVENT + "\n");
 
         StringBuilder str;
+        List<String> classes;
         for (ClassFactory factory : factories.values()) {
+            classes = new ArrayList<>();
+
             for (Map.Entry<String, String> entry : factory.getNamesOfCreatedClasses().entrySet()) {
                 str = new StringBuilder();
                 if (addKey) str.append(entry.getKey()).append(": ");
                 str.append(entry.getValue());
-                out.add(str.toString());
+                classes.add(str.toString());
+            }
+
+
+            if (factory.getClass().equals(CollectionClassFactory.class)) {
+                out.put(Classnames.COLLECTION, classes);
+            }
+            else if (factory.getClass().equals(ContainerClassFactory.class)) {
+                out.put(Classnames.CONTAINER, classes);
+            }
+            else if (factory.getClass().equals(ListClassFactory.class)) {
+                out.put(Classnames.LIST, classes);
+            }
+            else if (factory.getClass().equals(ContinuousClassFactory.class)) {
+                out.put(Classnames.CONTINUOUS, classes);
+            }
+            else if (factory.getClass().equals(DiscreteClassFactory.class)) {
+                out.put(Classnames.DISCRETE, classes);
+            }
+            else if (factory.getClass().equals(DurationClassFactory.class)) {
+                out.put(Classnames.DURATION, classes);
+            }
+            else if (factory.getClass().equals(LiteralClassFactory.class)) {
+                out.put(Classnames.LITERAL, classes);
+            }
+            else if (factory.getClass().equals(IDClassFactory.class)) {
+                out.put(Classnames.ID, classes);
+            }
+            else if (factory.getClass().equals(BooleanClassFactory.class)) {
+                out.put(Classnames.BOOLEAN, classes);
+            }
+            else if (factory.getClass().equals(TimestampClassFactory.class)) {
+                out.put(Classnames.TIMESTAMP, classes);
             }
         }
+
         return out;
     }
 
