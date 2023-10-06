@@ -1,6 +1,7 @@
-package de.uni_trier.wi2;
+package de.uni_trier.wi2.conversion;
 
 import de.uni_trier.wi2.classFactories.*;
+import de.uni_trier.wi2.error.XESGraphToWorkflowConversionException;
 import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
@@ -28,7 +29,7 @@ import java.sql.Timestamp;
 import java.util.*;
 
 /**
- * Converter that converts a {@link de.uni_trier.wi2.XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
+ * Converter that converts a {@link XESGraph} to a {@link de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject}.
  * In the process of conversion, for each attribute key in the Events of the graph, a matching class is created.
  * The converter is able to print a list of all classes that were ever created by it.
  * @author Eric Brake

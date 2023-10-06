@@ -1,4 +1,4 @@
-package de.uni_trier.wi2;
+package de.uni_trier.wi2.conversion;
 
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.id.XID;
@@ -8,10 +8,11 @@ import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XTrace;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 /**
- * Implementation of the {@link de.uni_trier.wi2.XESGraph} Interface.
+ * Implementation of the {@link XESGraph} Interface.
  * In this implementation, on creation, event and trace attributes can be provided.
  * They are than added to all events that do not already have matching keys and to the trace attributes respectively.
  * This should be used to make sure that all event and trace attributes have all global attributes provided in the log.
@@ -33,7 +34,7 @@ public class XESTraceGraph implements XESGraph {
 
     /**
      * True if edges by document order should be added, false else.
-     * Makes initialization of {@link de.uni_trier.wi2.XESTraceGraph#edges} unnecessary for internal representation if no further edges are required.
+     * Makes initialization of {@link XESTraceGraph#edges} unnecessary for internal representation if no further edges are required.
      */
     private boolean defaultEdges = false;
 
@@ -83,45 +84,41 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * Creates edges between all events that fulfill the criteria defined by the filters.
+     * Creates edges between all events that fulfill the criteria defined by the filter.
      *
-     * @param f1 Filter that is applied to find all events that should be beginnings of edges.
-     * @param f2 Filter that is applied to find all events that should be endings of edges.
+     * @param filter Filter that is applied to find all events between whom an edge should be added.
      */
-    public void addEdges(Filter f1, Filter f2) {
+    public void addEdges(BiFunction<XEvent, XEvent, Boolean> filter) {
         if (edges == null) createBaseMap();
-        Iterator<XEvent> fromIt = trace.stream().filter(f1::filter).iterator();
-        List<XEvent> filteredTo = trace.stream().filter(f2::filter).collect(Collectors.toList());
-        while (fromIt.hasNext()) {
-            XEvent from = fromIt.next();
-            for (XEvent event : filteredTo) {
-                addEdge(from.getID(), event.getID());
+        for (XEvent from : trace) {
+            for (XEvent to : trace) {
+                if (filter.apply(from, to)) {
+                    addEdge(from.getID(), to.getID());
+                }
             }
         }
     }
 
     /**
-     * Removes edges between all events that fulfill the criteria defined by the filters.
+     * Removes edges between all events that fulfill the criteria defined by the filter.
      *
-     * @param f1 Filter that is applied to find all events that are matching beginnings of edges.
-     * @param f2 Filter that is applied to find all events that are matching endings of edges.
+     * @param filter Filter that is applied to find all events between whom an edge should be removed.
      */
-    public void removeEdges(Filter f1, Filter f2) {
+    public void removeEdges(BiFunction<XEvent, XEvent, Boolean> filter) {
         if (edges == null) createBaseMap();
-        Iterator<XEvent> fromIt = trace.stream().filter(f1::filter).iterator();
-        List<XEvent> filteredTo = trace.stream().filter(f2::filter).collect(Collectors.toList());
-        while (fromIt.hasNext()) {
-            XEvent from = fromIt.next();
-            for (XEvent event : filteredTo) {
-                removeEdge(from.getID(), event.getID());
+        for (XEvent from : trace) {
+            for (XEvent to : trace) {
+                if (filter.apply(from, to)) {
+                    removeEdge(from.getID(), to.getID());
+                }
             }
         }
     }
 
     /**
-     * Initializes {@link de.uni_trier.wi2.XESTraceGraph#edges}.
-     * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is true, the map is initialized with the edges implied by {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges}.
-     * If {@link de.uni_trier.wi2.XESTraceGraph#defaultEdges} is false, the map is empty
+     * Initializes {@link XESTraceGraph#edges}.
+     * If {@link XESTraceGraph#defaultEdges} is true, the map is initialized with the edges implied by {@link XESTraceGraph#defaultEdges}.
+     * If {@link XESTraceGraph#defaultEdges} is false, the map is empty
      */
     private void createBaseMap() {
         edges = new HashMap<>(size());
@@ -129,7 +126,7 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * Adds a new edge to {@link de.uni_trier.wi2.XESTraceGraph#edges}.
+     * Adds a new edge to {@link XESTraceGraph#edges}.
      *
      * @param from ID of the event that should be the beginning of the edge.
      * @param to   ID of the event that should be the end of the edge.
@@ -143,8 +140,8 @@ public class XESTraceGraph implements XESGraph {
     }
 
     /**
-     * If existing, removes an edge from {@link de.uni_trier.wi2.XESTraceGraph#edges}.
-     * If the edge does not exist, {@link de.uni_trier.wi2.XESTraceGraph#edges} stays unchanged.
+     * If existing, removes an edge from {@link XESTraceGraph#edges}.
+     * If the edge does not exist, {@link XESTraceGraph#edges} stays unchanged.
      *
      * @param from ID of the event that is the beginning of the edge.
      * @param to   ID of the event that is the end of the edge.

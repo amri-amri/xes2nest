@@ -1,5 +1,6 @@
-package de.uni_trier.wi2;
+package de.uni_trier.wi2.conversion;
 
+import de.uni_trier.wi2.error.XESFileToGraphConversionException;
 import de.uni_trier.wi2.procake.utils.conversion.OneWayConverter;
 import org.apache.commons.io.IOUtils;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
@@ -13,13 +14,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * Converter that can be used to convert a File that contains XML following XES Standard into {@link de.uni_trier.wi2.XESGraph}.
+ * Converter that can be used to convert a File that contains XML following XES Standard into {@link XESGraph}.
  * @see <a href=”https://www.xes-standard.org>XES Standard</a>
  * @author Eric Brake
  */
 public class FileToXESGraphConverter implements OneWayConverter<File, Collection<XESTraceGraph>> {
     /**
-     * Converts a XES-File into a collection of {@link de.uni_trier.wi2.XESGraph}.
+     * Converts a XES-File into a collection of {@link XESGraph}.
      * The conversion turns each trace of the XES-File into a XESGraph.
      * Information about the log, such as Classifiers, are lost.
      * To parse the File, the openXES library is used.
