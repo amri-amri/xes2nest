@@ -1,8 +1,8 @@
 package demo;
 
-import de.uni_trier.wi2.FileToXESGraphConverter;
-import de.uni_trier.wi2.XESGraphToWorkflowConverter;
-import de.uni_trier.wi2.XESTraceGraph;
+import de.uni_trier.wi2.conversion.FileToXESGraphConverter;
+import de.uni_trier.wi2.conversion.XESGraphToWorkflowConverter;
+import de.uni_trier.wi2.conversion.XESTraceGraph;
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.ModelFactory;
