@@ -6,20 +6,13 @@
 
     <groupId>de.uni-trier.wi2</groupId>
     <artifactId>XEStoWorkflowConverter</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <repositories>
-        <repository>
-            <id>local-maven-repo</id>
-            <url>file:///${project.basedir}/local-maven-repo</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
@@ -29,5 +22,26 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>local-maven-repo</id>
+            <url>file:///${project.basedir}/local-maven-repo</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>onkocasebackend</id>
+            <url>https://gitlab.rlp.net/api/v4/projects/36008/packages/maven</url>
+        </repository>
+
+        <snapshotRepository>
+            <id>xestoworkflowconverter</id>
+            <url>https://gitlab.rlp.net/api/v4/projects/32964/packages/maven</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+
 
 </project>

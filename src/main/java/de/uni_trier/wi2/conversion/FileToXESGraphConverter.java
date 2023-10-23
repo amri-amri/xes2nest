@@ -48,7 +48,7 @@ public class FileToXESGraphConverter implements OneWayConverter<File, Collection
     }
 
     /**
-     * Converts a String into a collection of {@link de.uni_trier.wi2.XESGraph}.
+     * Converts a String into a collection of {@link de.uni_trier.wi2.conversion.XESGraph}.
      * The conversion turns each trace of the inside the String into a XESGraph.
      * Information about the log, such as Classifiers, are lost.
      * To parse the File, the openXES library is used.
