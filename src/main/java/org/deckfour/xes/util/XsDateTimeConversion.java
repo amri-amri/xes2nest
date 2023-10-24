@@ -38,7 +38,7 @@
  */
 package org.deckfour.xes.util;
 
-import javax.xml.bind.DatatypeConverter;
+import jakarta.xml.bind.DatatypeConverter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
