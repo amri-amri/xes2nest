@@ -31,11 +31,11 @@ public class FileToXESGraphConverter implements OneWayConverter<File, Collection
      * @throws XESFileToGraphConversionException if parsing fails.
      */
     @Override
-    public Collection<XESTraceGraph> convert(File origin) throws XESFileToGraphConversionException {
+    public ArrayList<XESTraceGraph> convert(File origin) throws XESFileToGraphConversionException {
         XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
         XesXmlParser xmlParser = new XesXmlParser(xFactory);
         XLog log;
-        Collection<XESTraceGraph> graphs = new ArrayList<>();
+        ArrayList<XESTraceGraph> graphs = new ArrayList<>();
         try {
             log = xmlParser.parse(origin).get(0);
         } catch (Exception e) {
