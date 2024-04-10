@@ -1,6 +1,6 @@
 package de.uni_trier.wi2.namingUtils;
 
-import de.uni_trier.wi2.conversion.XESGraph;
+import de.uni_trier.wi2.dom.conversion.XESGraph;
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.model.*;
 

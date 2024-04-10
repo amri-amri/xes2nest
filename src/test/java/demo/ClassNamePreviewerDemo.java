@@ -1,6 +1,6 @@
 package demo;
 
-import de.uni_trier.wi2.XEStoWorkflowConverter;
+import de.uni_trier.wi2.dom.XEStoWorkflowConverter;
 import de.uni_trier.wi2.namingUtils.ClassNamePreviewer;
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;

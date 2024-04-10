@@ -1,4 +1,4 @@
-package de.uni_trier.wi2;
+package de.uni_trier.wi2.dom;
 
 import de.uni_trier.wi2.classFactories.*;
 import de.uni_trier.wi2.procake.data.model.Model;
@@ -312,7 +312,7 @@ public class XEStoWorkflowConverter {
 
   private NESTWorkflowObject getWorkflow(int index, String id) throws Exception {
     XTrace xTrace = log.get(index);
-    NESTWorkflowBuilder<NESTWorkflowObject> builder = new NESTWorkflowBuilderImpl();
+    NESTWorkflowBuilder<NESTWorkflowObject> builder = new NESTWorkflowBuilderImpl<>();
     NESTWorkflowObject workflow = builder.createNESTWorkflowGraphObject(id, NESTWorkflowClass.CLASS_NAME,null);
     NESTWorkflowModifier traceModifier = workflow.getModifier();
 

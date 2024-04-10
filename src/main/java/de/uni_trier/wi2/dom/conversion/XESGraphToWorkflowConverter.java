@@ -1,7 +1,7 @@
-package de.uni_trier.wi2.conversion;
+package de.uni_trier.wi2.dom.conversion;
 
 import de.uni_trier.wi2.classFactories.*;
-import de.uni_trier.wi2.error.XESGraphToWorkflowConversionException;
+import de.uni_trier.wi2.dom.error.XESGraphToWorkflowConversionException;
 import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
@@ -34,7 +34,7 @@ import java.util.*;
  * The converter is able to print a list of all classes that were ever created by it.
  * @author Eric Brake
  */
-public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NESTWorkflowObject> {
+public class XESGraphToWorkflowConverter implements OneWayConverter<de.uni_trier.wi2.dom.conversion.XESGraph, NESTWorkflowObject> {
 
     /**
      * Service used to create the values of the attributes of the Events.
@@ -78,7 +78,7 @@ public class XESGraphToWorkflowConverter implements OneWayConverter<XESGraph, NE
      * @return the converted object
      */
     @Override
-    public NESTWorkflowObject convert(XESGraph origin) {
+    public NESTWorkflowObject convert(de.uni_trier.wi2.dom.conversion.XESGraph origin) {
         NESTWorkflowBuilder<NESTWorkflowObject> builder = new NESTWorkflowBuilderImpl<>();
         NESTWorkflowObject workflow = builder.createNESTWorkflowGraphObject("T" + UUID.randomUUID(), NESTWorkflowClass.CLASS_NAME, null);
         NESTWorkflowModifier traceModifier = workflow.getModifier();

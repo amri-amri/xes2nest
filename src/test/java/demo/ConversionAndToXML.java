@@ -6,7 +6,7 @@ import de.uni_trier.wi2.procake.data.model.ModelFactory;
 import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
 import de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory;
 import de.uni_trier.wi2.procake.data.objectpool.WriteableObjectPool;
-import de.uni_trier.wi2.XEStoWorkflowConverter;
+import de.uni_trier.wi2.dom.XEStoWorkflowConverter;
 
 import java.io.File;
 import java.io.FileWriter;

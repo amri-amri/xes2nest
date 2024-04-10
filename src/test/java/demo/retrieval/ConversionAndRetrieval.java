@@ -7,7 +7,7 @@ import de.uni_trier.wi2.procake.data.object.nest.NESTWorkflowObject;
 import de.uni_trier.wi2.procake.data.objectpool.ObjectPoolFactory;
 import de.uni_trier.wi2.procake.data.objectpool.WriteableObjectPool;
 import de.uni_trier.wi2.procake.retrieval.*;
-import de.uni_trier.wi2.XEStoWorkflowConverter;
+import de.uni_trier.wi2.dom.XEStoWorkflowConverter;
 
 public class ConversionAndRetrieval {
     public static void main(String[] args) throws Exception {

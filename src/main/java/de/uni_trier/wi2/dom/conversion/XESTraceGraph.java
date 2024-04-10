@@ -1,4 +1,4 @@
-package de.uni_trier.wi2.conversion;
+package de.uni_trier.wi2.dom.conversion;
 
 import org.deckfour.xes.extension.XExtension;
 import org.deckfour.xes.id.XID;
@@ -9,7 +9,6 @@ import org.deckfour.xes.model.XTrace;
 
 import java.util.*;
 import java.util.function.BiFunction;
-import java.util.stream.Collectors;
 
 /**
  * Implementation of the {@link XESGraph} Interface.
@@ -19,7 +18,7 @@ import java.util.stream.Collectors;
  * Also, the graph has all global trace attributes of the original XES log.
  * The graph does not have any edges by default, but edges can be added manually through different methods.
  */
-public class XESTraceGraph implements XESGraph {
+public class XESTraceGraph implements de.uni_trier.wi2.dom.conversion.XESGraph {
 
     /**
      * Underlying trace of graph.

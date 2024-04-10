@@ -1,8 +1,8 @@
 package demo.retrieval;
 
-import de.uni_trier.wi2.conversion.FileToXESGraphConverter;
-import de.uni_trier.wi2.conversion.XESGraphToWorkflowConverter;
-import de.uni_trier.wi2.conversion.XESTraceGraph;
+import de.uni_trier.wi2.dom.conversion.FileToXESGraphConverter;
+import de.uni_trier.wi2.dom.conversion.XESGraphToWorkflowConverter;
+import de.uni_trier.wi2.dom.conversion.XESTraceGraph;
 import de.uni_trier.wi2.namingUtils.Classnames;
 import de.uni_trier.wi2.procake.CakeInstance;
 import de.uni_trier.wi2.procake.data.model.Model;

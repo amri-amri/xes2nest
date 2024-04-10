@@ -1,4 +1,4 @@
-package de.uni_trier.wi2.conversion;
+package de.uni_trier.wi2.dom.conversion;
 
 
 import org.deckfour.xes.id.XID;

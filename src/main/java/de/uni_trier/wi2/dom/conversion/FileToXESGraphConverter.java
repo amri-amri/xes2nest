@@ -1,6 +1,6 @@
-package de.uni_trier.wi2.conversion;
+package de.uni_trier.wi2.dom.conversion;
 
-import de.uni_trier.wi2.error.XESFileToGraphConversionException;
+import de.uni_trier.wi2.dom.error.XESFileToGraphConversionException;
 import de.uni_trier.wi2.procake.utils.conversion.OneWayConverter;
 import org.apache.commons.io.IOUtils;
 import org.deckfour.xes.factory.XFactoryNaiveImpl;
@@ -31,24 +31,24 @@ public class FileToXESGraphConverter implements OneWayConverter<File, Collection
      * @throws XESFileToGraphConversionException if parsing fails.
      */
     @Override
-    public ArrayList<XESTraceGraph> convert(File origin) throws XESFileToGraphConversionException {
+    public ArrayList<de.uni_trier.wi2.dom.conversion.XESTraceGraph> convert(File origin) throws XESFileToGraphConversionException {
         XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
         XesXmlParser xmlParser = new XesXmlParser(xFactory);
         XLog log;
-        ArrayList<XESTraceGraph> graphs = new ArrayList<>();
+        ArrayList<de.uni_trier.wi2.dom.conversion.XESTraceGraph> graphs = new ArrayList<>();
         try {
             log = xmlParser.parse(origin).get(0);
         } catch (Exception e) {
             throw new XESFileToGraphConversionException(e.getMessage());
         }
         for (XTrace trace : log) {
-            graphs.add(new XESTraceGraph(trace, log.getGlobalEventAttributes(), log.getGlobalTraceAttributes()));
+            graphs.add(new de.uni_trier.wi2.dom.conversion.XESTraceGraph(trace, log.getGlobalEventAttributes(), log.getGlobalTraceAttributes()));
         }
         return graphs;
     }
 
     /**
-     * Converts a String into a collection of {@link de.uni_trier.wi2.conversion.XESGraph}.
+     * Converts a String into a collection of {@link XESGraph}.
      * The conversion turns each trace of the inside the String into a XESGraph.
      * Information about the log, such as Classifiers, are lost.
      * To parse the File, the openXES library is used.
@@ -58,18 +58,18 @@ public class FileToXESGraphConverter implements OneWayConverter<File, Collection
      * @return Collection of XESGraphs
      * @throws XESFileToGraphConversionException if parsing fails.
      */
-    public Collection<XESTraceGraph> convert(String origin) {
+    public Collection<de.uni_trier.wi2.dom.conversion.XESTraceGraph> convert(String origin) {
         XFactoryNaiveImpl xFactory = new XFactoryNaiveImpl();
         XesXmlParser xmlParser = new XesXmlParser(xFactory);
         XLog log;
-        Collection<XESTraceGraph> graphs = new ArrayList<>();
+        Collection<de.uni_trier.wi2.dom.conversion.XESTraceGraph> graphs = new ArrayList<>();
         try {
             log = xmlParser.parse(IOUtils.toInputStream(origin, StandardCharsets.UTF_8)).get(0);
         } catch (Exception e) {
             throw new XESFileToGraphConversionException(e.getMessage());
         }
         for (XTrace trace : log) {
-            graphs.add(new XESTraceGraph(trace, log.getGlobalEventAttributes(), log.getGlobalTraceAttributes()));
+            graphs.add(new de.uni_trier.wi2.dom.conversion.XESTraceGraph(trace, log.getGlobalEventAttributes(), log.getGlobalTraceAttributes()));
         }
         return graphs;
     }
