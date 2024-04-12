@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class AbstractXEStoNESTConverter implements OneWayConverter<String, ArrayList<NESTSequentialWorkflowObject>> {
+public abstract class XEStoNESTConverter implements OneWayConverter<String, ArrayList<NESTSequentialWorkflowObject>> {
 
     protected final Logger logger;
 
@@ -23,7 +23,7 @@ public abstract class AbstractXEStoNESTConverter implements OneWayConverter<Stri
     protected Map<String, ClassFactory> factories;
     protected boolean addGlobals;
 
-    protected AbstractXEStoNESTConverter(Model model) {
+    protected XEStoNESTConverter(Model model) {
         logger = LoggerFactory.getLogger(this.getClass());
         this.model = model;
         addBaseAndEventClasses();

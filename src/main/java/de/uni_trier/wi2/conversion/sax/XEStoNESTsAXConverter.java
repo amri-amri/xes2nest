@@ -1,23 +1,21 @@
 package de.uni_trier.wi2.conversion.sax;
 
-import de.uni_trier.wi2.conversion.AbstractXEStoNESTConverter;
+import de.uni_trier.wi2.conversion.XEStoNESTConverter;
 import de.uni_trier.wi2.procake.data.model.Model;
 import de.uni_trier.wi2.procake.data.object.nest.NESTSequentialWorkflowObject;
 import de.uni_trier.wi2.utils.classFactories.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.xerces.jaxp.DocumentBuilderImpl;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.parsers.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class XEStoNESTsAXConverter extends AbstractXEStoNESTConverter {
+public class XEStoNESTsAXConverter extends XEStoNESTConverter {
 
     public XEStoNESTsAXConverter(Model model){
         super(model);
