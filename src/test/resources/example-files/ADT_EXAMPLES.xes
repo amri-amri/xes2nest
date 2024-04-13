@@ -7,10 +7,12 @@
  <extension name="Concept" prefix="concept" uri="http://www.xes-standard.org/concept.xesext"/>
  <global scope="trace">
   <string key="concept:name" value="__INVALID__"/>
+  <string key="ABCDE" value="HIssHAHU"/>
  </global>
  <global scope="event">
   <string key="concept:name" value="__INVALID__"/>
   <string key="lifecycle:transition" value="complete"/>
+  <string key="ABC" value="HIHAHU"/>
  </global>
  <classifier keys="concept:name lifecycle:transition" name="MXML Legacy Classifier"/>
  <classifier keys="concept:name" name="Event Name"/>
