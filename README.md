@@ -25,7 +25,7 @@ based converter `XEStoNESTsAXConverter`, which currently
 is the only implementation of `XEStoNESTConverter`.
 
 After initializing the converter, the
-`configure(boolean addGlobals)` method has to be called
+`configure(boolean addGlobals)` method can be called
 to configure the converter.
 As of now, the only argument is a boolean `addGlobals`,
 specifying whether global trace or event attributes
