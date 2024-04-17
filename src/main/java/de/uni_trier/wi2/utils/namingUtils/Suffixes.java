@@ -1,6 +1,6 @@
 package de.uni_trier.wi2.utils.namingUtils;
 
-public abstract class Postfixes{
+public abstract class Suffixes {
 
     public static final String EVENT = "EventClass";
 
