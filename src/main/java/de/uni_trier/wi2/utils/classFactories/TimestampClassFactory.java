@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class TimestampClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.TIMESTAMP;
+    public static final String SUFFIX = Suffixes.TIMESTAMP;
 
     public TimestampClassFactory(Model model) {
         super("TimestampClass", Classnames.TIMESTAMP, model, model.getTimestampSystemClass());

@@ -14,8 +14,8 @@ public abstract class UnnaturallyNestedClassFactory extends ClassFactory{
 
     private static final String UNNATURALLY_NESTED = Classnames.UNNATURALLY_NESTED;
 
-    public UnnaturallyNestedClassFactory(String postfix, String className, Model model, DataClass dataClass) {
-        super(postfix, className, model, dataClass);
+    public UnnaturallyNestedClassFactory(String suffix, String className, Model model, DataClass dataClass) {
+        super(suffix, className, model, dataClass);
     }
 
     /**
@@ -29,7 +29,7 @@ public abstract class UnnaturallyNestedClassFactory extends ClassFactory{
         AggregateClass unnaturallyNested = model.getClass(UNNATURALLY_NESTED);
         if (unnaturallyNested == null) {
             unnaturallyNested = (AggregateClass) baseClass.createSubclass(UNNATURALLY_NESTED);
-            unnaturallyNested.addAttribute("attributes",model.getSetSystemClass()); //TODO HIER SOLLTE STATT DER SystemSetClass EINE KLASSE HIN, DIE Sets DEFINIERT, DIE NUR OBJEKTE DER KLASSE XESBaseClass (->Erben) ENTHALTEN
+            unnaturallyNested.addAttribute("attributes",model.getSetSystemClass()); //TODO: HIER SOLLTE STATT DER SystemSetClass EINE KLASSE HIN, DIE Sets DEFINIERT, DIE NUR OBJEKTE DER KLASSE XESBaseClass (->Erben) ENTHALTEN
             unnaturallyNested.setAbstract(true);
             unnaturallyNested.finishEditing();
         }

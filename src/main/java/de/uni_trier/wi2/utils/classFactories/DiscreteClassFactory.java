@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class DiscreteClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.DISCRETE;
+    public static final String SUFFIX = Suffixes.DISCRETE;
 
     public DiscreteClassFactory(Model model) {
         super("DiscreteClass", Classnames.DISCRETE, model, model.getIntegerSystemClass());

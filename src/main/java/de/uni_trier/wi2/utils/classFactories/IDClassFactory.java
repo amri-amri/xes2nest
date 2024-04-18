@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class IDClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.ID;
+    public static final String SUFFIX = Suffixes.ID;
 
     public IDClassFactory(Model model) {
         super("IDClass", Classnames.ID, model, model.getStringSystemClass());

@@ -14,8 +14,8 @@ public abstract class NaturallyNestedClassFactory extends ClassFactory{
 
     private static final String NATURALLY_NESTED = Classnames.NATURALLY_NESTED;
 
-    public NaturallyNestedClassFactory(String postfix, String className, Model model, DataClass dataClass) {
-        super(postfix, className, model, dataClass);
+    public NaturallyNestedClassFactory(String suffix, String className, Model model, DataClass dataClass) {
+        super(suffix, className, model, dataClass);
     }
 
     /**

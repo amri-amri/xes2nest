@@ -25,7 +25,7 @@ public abstract class ClassFactory {
      * String that the factory appends to the key to create a name of the new key class.
      * Should be closely related to the {@link ClassFactory#type_CLASS_NAME}.
      */
-    private final String POSTFIX;
+    private final String SUFFIX;
 
     /**
      * Name of the class that serves as a basis for the creation of key classes.
@@ -44,21 +44,21 @@ public abstract class ClassFactory {
     private final String BASE = Classnames.BASE;
 
 
-    private ClassFactory(String postfix, String className, Model model) {
+    private ClassFactory(String suffix, String className, Model model) {
         this.model = model;
-        this.POSTFIX = postfix;
+        this.SUFFIX = suffix;
         this.type_CLASS_NAME = className;
     }
 
     /**
      * Creates a new ClassFactory.
-     * @param postfix string that is appended to new key classes.
+     * @param suffix string that is appended to new key classes.
      * @param className name of the class that should be used as basis for the creation of new key classes.
      * @param model ProCake model to which the key classes should be added
      * @param dataClass Class to which the "value" attribute of the base class should be changed.
      */
-    ClassFactory(String postfix, String className, Model model, DataClass dataClass) {
-        this(postfix, className, model);
+    ClassFactory(String suffix, String className, Model model, DataClass dataClass) {
+        this(suffix, className, model);
         Map<String, DataClass> updates = new HashMap<>();
         updates.put("value", dataClass);
         initializeTypeClass(updates);
@@ -71,7 +71,7 @@ public abstract class ClassFactory {
      * @return the matching ProCake Model class.
      */
     public AggregateClass getClass(String keyName) {
-        String classname = KeyNameConverter.getValidName(keyName) + POSTFIX;
+        String classname = KeyNameConverter.getValidName(keyName) + SUFFIX;
         if (model.getClass(classname) != null) return model.getClass(classname);
         AggregateClass nClass = (AggregateClass) typeClass.createSubclass(classname);
         nClass.setAbstract(false);

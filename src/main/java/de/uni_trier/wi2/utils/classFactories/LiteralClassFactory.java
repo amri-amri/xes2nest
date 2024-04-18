@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class LiteralClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.LITERAL;
+    public static final String SUFFIX = Suffixes.LITERAL;
 
     public LiteralClassFactory(Model model) {
         super("LiteralClass", Classnames.LITERAL, model, model.getStringSystemClass());

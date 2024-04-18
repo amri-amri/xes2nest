@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class ContinuousClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.CONTINUOUS;
+    public static final String SUFFIX = Suffixes.CONTINUOUS;
 
     public ContinuousClassFactory(Model model) {
         super("ContinuousClass", Classnames.CONTINUOUS, model, model.getDoubleSystemClass());

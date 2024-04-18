@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class BooleanClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.BOOLEAN;
+    public static final String SUFFIX = Suffixes.BOOLEAN;
 
     public BooleanClassFactory(Model model) {
         super("BooleanClass", Classnames.BOOLEAN, model, model.getBooleanSystemClass());

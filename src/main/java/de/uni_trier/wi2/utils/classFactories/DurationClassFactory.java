@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class DurationClassFactory extends UnnaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.DURATION;
+    public static final String SUFFIX = Suffixes.DURATION;
 
     public DurationClassFactory(Model model) {
         super("DurationClass", Classnames.DURATION, model, model.getIntegerSystemClass());

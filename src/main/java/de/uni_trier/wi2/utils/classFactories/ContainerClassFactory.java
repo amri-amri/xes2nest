@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class ContainerClassFactory extends NaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.CONTAINER;
+    public static final String SUFFIX = Suffixes.CONTAINER;
 
     public ContainerClassFactory(Model model) {
         super("ContainerClass", Classnames.CONTAINER, model, model.getSetSystemClass());

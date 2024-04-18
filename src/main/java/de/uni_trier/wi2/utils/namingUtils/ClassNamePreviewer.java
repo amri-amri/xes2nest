@@ -18,34 +18,34 @@ public class ClassNamePreviewer {
         String className;
         switch (attrClassName) {
             case "XAttributeLiteralImpl":
-                className = LiteralClassFactory.POSTFIX;
+                className = LiteralClassFactory.SUFFIX;
                 break;
             case "XAttributeBooleanImpl":
-                className = BooleanClassFactory.POSTFIX;
+                className = BooleanClassFactory.SUFFIX;
                 break;
             case "XAttributeContinuousImpl":
-                className = ContinuousClassFactory.POSTFIX;
+                className = ContinuousClassFactory.SUFFIX;
                 break;
             case "XAttributeDiscreteImpl":
-                className = DiscreteClassFactory.POSTFIX;
+                className = DiscreteClassFactory.SUFFIX;
                 break;
             case "XAttributeTimestampImpl":
-                className = TimestampClassFactory.POSTFIX;
+                className = TimestampClassFactory.SUFFIX;
                 break;
             case "XAttributeDurationImpl":
-                className = DurationClassFactory.POSTFIX;
+                className = DurationClassFactory.SUFFIX;
                 break;
             case "XAttributeIDImpl":
-                className = IDClassFactory.POSTFIX;
+                className = IDClassFactory.SUFFIX;
                 break;
             case "XAttributeCollectionImpl":
-                className = CollectionClassFactory.POSTFIX;
+                className = CollectionClassFactory.SUFFIX;
                 break;
             case "XAttributeContainerImpl":
-                className = ContainerClassFactory.POSTFIX;
+                className = ContainerClassFactory.SUFFIX;
                 break;
             case "XAttributeListImpl":
-                className = ListClassFactory.POSTFIX;
+                className = ListClassFactory.SUFFIX;
                 break;
             default:
                 className = "UnknownClass";

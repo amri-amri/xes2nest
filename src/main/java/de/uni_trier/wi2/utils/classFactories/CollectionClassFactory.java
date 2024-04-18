@@ -9,7 +9,7 @@ import de.uni_trier.wi2.utils.namingUtils.Suffixes;
  */
 public class CollectionClassFactory extends NaturallyNestedClassFactory{
 
-    public static final String POSTFIX = Suffixes.COLLECTION;
+    public static final String SUFFIX = Suffixes.COLLECTION;
 
     public CollectionClassFactory(Model model) {
         super("CollectionClass", Classnames.COLLECTION, model, model.getCollectionSystemClass());
