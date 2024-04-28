@@ -12,15 +12,25 @@
  <global scope="event">
   <string key="concept:name" value="__INVALID__"/>
   <string key="lifecycle:transition" value="complete"/>
-  <string key="ABC" value="HIHAHU"/>
+  <string key="ABC" value="HIHAHU" dings="A" bums="B"/>
  </global>
  <classifier keys="concept:name lifecycle:transition" name="MXML Legacy Classifier"/>
- <classifier keys="concept:name" name="Event Name"/>
+ <classifier keys="concept:name" name="Name"/>
  <classifier keys="org:resource" name="Resource"/>
  <classifier keys="lifecycle:transition" name="Lifecycle transition"/>
  <string key="concept:name" value="Event Log"/>
  <string key="lifecycle:model" value="standard"/>
- 
+
+ <event>
+  <string key="concept:name" value="611927"/>
+  <boolean key="isLogEvent" value="True"/>
+ </event>
+
+ <event>
+  <string key="concept:name" value="OLOLOL"/>
+  <boolean key="isLogEvent" value="True"/>
+ </event>
+
  <trace>
   <string key="concept:name" value="611927"/>
   <date key="time:timestamp" value="1963-06-02T10:00:00.000+00:00"/>
@@ -6672,4 +6682,5 @@ angrenzend und an den Magen angrenzend)
    <string key="Allgemeiner_Leistungszustand" value="U"/>
   </event>
  </trace>
+
 </log>
