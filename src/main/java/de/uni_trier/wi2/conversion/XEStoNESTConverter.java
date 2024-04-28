@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public abstract class XEStoNESTConverter implements OneWayConverter<String, ArrayList<NESTSequentialWorkflowObject>> {
 
+    private static boolean initialized = false;
 
     protected final Logger logger;
 
@@ -35,7 +36,7 @@ public abstract class XEStoNESTConverter implements OneWayConverter<String, Arra
     protected XEStoNESTConverter(Model model) {
         logger = LoggerFactory.getLogger(this.getClass());
         this.model = model;
-        initializeBaseClasses();
+        if (!initialized) initializeBaseClasses();
     }
 
     public void initializeBaseClasses() {
@@ -155,6 +156,8 @@ public abstract class XEStoNESTConverter implements OneWayConverter<String, Arra
             eventClass.setElementClass(baseClass);
             eventClass.finishEditing();
         }
+
+        initialized = true;
     }
 
     public final void configure(boolean createSubclasses, boolean includeXMLattributes) {

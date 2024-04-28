@@ -35,34 +35,4 @@ public class XEStoNESTsAXConverter extends XEStoNESTConverter {
             return null;
         }
     }
-
-
-//    @Deprecated
-//    protected void initializeFactories() {
-//        factories = new HashMap<>();
-//        addFactory("string", new LiteralClassFactory(model));
-//        addFactory("date", new TimestampClassFactory(model));
-//        addFactory("int", new DiscreteClassFactory(model));
-//        addFactory("float", new ContinuousClassFactory(model));
-//        addFactory("boolean", new BooleanClassFactory(model));
-//        addFactory("id", new IDClassFactory(model));
-//        addFactory("list", new ListClassFactory(model));
-//        addFactory("container", new ContainerClassFactory(model));
-//    }
-
-
-    //public ArrayList<NESTSequentialWorkflowObjectImpl> convert(String xes) throws ParserConfigurationException, SAXException, IOException {
-    //    SAXParserFactory factory = SAXParserFactory.newInstance();
-    //    SAXParser saxParser = factory.newSAXParser();
-    //    XesHandler xesHandler = new XesHandler();
-    //    File file = new File(URI.create(""));
-    //    PrintWriter pw = new PrintWriter(file);
-    //    pw.write(xes);
-    //    pw.close();
-    //    saxParser.parse("", xesHandler);
-    //    ArrayList<NESTSequentialWorkflowObjectImpl> result = xesHandler.getWorkflows();
-    //    return result;
-    //}
-
-
 }
