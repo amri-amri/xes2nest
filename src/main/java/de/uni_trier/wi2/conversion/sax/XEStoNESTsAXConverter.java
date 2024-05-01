@@ -28,7 +28,7 @@ public class XEStoNESTsAXConverter extends XEStoNESTConverter {
             SAXParser saxParser = factory.newSAXParser();
             XESHandler xesHandler = new XESHandler();
             xesHandler.setModel(model);
-            xesHandler.configure(createSubclasses, includeXMLattributes, classifierName);
+            xesHandler.configure(createSubclasses, includeXMLattributes, classifierName, ids);
             saxParser.parse(IOUtils.toInputStream(xes, StandardCharsets.UTF_8), xesHandler);
             return xesHandler.getWorkflows();
         } catch (ParserConfigurationException | SAXException | IOException e) {

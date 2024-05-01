@@ -11,7 +11,6 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
 import java.util.*;
 import java.util.concurrent.*;
 
@@ -36,30 +35,41 @@ public class XEStoNESTsAXparallelConverter extends XEStoNESTsAXConverter {
                 (ThreadPoolExecutor) Executors.newFixedThreadPool(maxThreads);
         List<NESTSequentialWorkflowObject> syncCollection = Collections.synchronizedList(new ArrayList<>());
 
-        int amountOfGroups = Math.min(maxThreads, splitLog.length-1);
-        StringBuilder[] traceGroups = new StringBuilder[amountOfGroups];
-        for (int i = 0; i < amountOfGroups; i++) traceGroups[i] = new StringBuilder();
+        final int amountOfGroups = Math.min(maxThreads, splitLog.length-1);
+        final StringBuilder[] traceGroups = new StringBuilder[amountOfGroups];
+        final String[][] idGroups = new String[amountOfGroups][];
+        final int idGroupSize = (int)Math.ceil((double)ids.length/amountOfGroups);
+        for (int i = 0; i < amountOfGroups; i++) {
+            traceGroups[i] = new StringBuilder();
+            idGroups[i] = new String[idGroupSize];
+        }
         int index = 0;
+        int idIndex = 0;
 
         for (int i = 1; i < splitLog.length; i++) {
-            //if (splitLog[i].trim().startsWith("/>")) continue;//todo add empty workflow
-            if (splitLog[i].startsWith("/>")) continue;//todo add empty workflow
-            String[] tracePlus = splitLog[i].split("</trace>");
-            if (tracePlus.length > 2) System.out.println("Warning");
+            String splitter;
+            if (splitLog[i].contains("</trace>")) splitter = "</trace>";
+            else splitter = "/>";
+            String[] tracePlus = splitLog[i].split(splitter);
             //if (tracePlus.length>=2) logWithoutTraces.append(tracePlus[1].trim());
-            if (classifierName!=null && tracePlus.length >= 2) logWithoutTraces.append(tracePlus[1]);
+            if (classifierName!=null) for (int j = 1; j < tracePlus.length; j++) logWithoutTraces.append(tracePlus[j]);
 
-            String trace = "<trace" + tracePlus[0] + "</trace>";
+            String trace = "<trace" + tracePlus[0] + splitter;
             traceGroups[index].append(trace);
+            if (i-1 < ids.length) idGroups[index][idIndex] = ids[i-1];
             index++;
-            if (index==amountOfGroups) index = 0;
+            if (index==amountOfGroups) {
+                index = 0;
+                idIndex++;
+            }
         }
 
         for (int i = 0; i < amountOfGroups; i++) {
             String traceGroup = "<log>" + traceGroups[i].toString() + "</log>";
+            String[] idGroup = idGroups[i];
             executor.submit(() -> {
                 XEStoNESTsAXConverter converter = new XEStoNESTsAXConverter(model);
-                converter.configure(createSubclasses, includeXMLattributes);
+                converter.configure(createSubclasses, includeXMLattributes, null, idGroup);
                 List<NESTSequentialWorkflowObject> workflows = converter.convert(traceGroup);
                 syncCollection.addAll(workflows);
             });
@@ -67,12 +77,12 @@ public class XEStoNESTsAXparallelConverter extends XEStoNESTsAXConverter {
 
         executor.shutdown();
         try {
-            if (executor.awaitTermination(24L, TimeUnit.HOURS)) {
+            if (executor.awaitTermination(24, TimeUnit.HOURS)) {
 
                 if (classifierName !=  null){
                     XESHandler xesHandler = new XESHandler();
                     xesHandler.setModel(model);
-                    xesHandler.configure(createSubclasses, includeXMLattributes, classifierName);
+                    xesHandler.configure(createSubclasses, includeXMLattributes, classifierName, null);
                     xesHandler.workflows.addAll(syncCollection);
                     syncCollection.clear();
                     SAXParserFactory factory = SAXParserFactory.newInstance();

@@ -21,6 +21,7 @@ public abstract class XEStoNESTConverter implements OneWayConverter<String, List
     protected Model model;
     protected boolean completeTraces;
     protected boolean includeXMLattributes;
+    protected String[] ids;
 
     /**
      * determines if subclasses are to be created for every (type,@key) combination
@@ -36,6 +37,7 @@ public abstract class XEStoNESTConverter implements OneWayConverter<String, List
     protected XEStoNESTConverter(Model model) {
         logger = LoggerFactory.getLogger(this.getClass());
         this.model = model;
+        this.ids = null;
         if (!initialized) initializeBaseClasses();
     }
 
@@ -161,13 +163,14 @@ public abstract class XEStoNESTConverter implements OneWayConverter<String, List
     }
 
     public final void configure(boolean createSubclasses, boolean includeXMLattributes) {
-        configure(createSubclasses, includeXMLattributes, null);
+        configure(createSubclasses, includeXMLattributes, null, null);
     }
 
-    public final void configure(boolean createSubclasses, boolean includeXMLattributes, String classifierName) {
+    public final void configure(boolean createSubclasses, boolean includeXMLattributes, String classifierName, String[] ids) {
         this.createSubclasses = createSubclasses;
         this.completeTraces = classifierName != null;
         this.classifierName = classifierName;
+        this.ids = ids;
     }
 
 }
