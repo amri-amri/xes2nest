@@ -32,6 +32,7 @@
  </event>
 
  <trace>
+  <string key="id" value="T0"/>
   <string key="concept:name" value="611927"/>
   <date key="time:timestamp" value="1963-06-02T10:00:00.000+00:00"/>
   <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>
@@ -1222,6 +1223,7 @@
   </event>
  </trace>
  <trace>
+  <string key="id" value="T1"/>
   <string key="concept:name" value="814919"/>
   <date key="time:timestamp" value="1984-05-28T10:00:00.000+00:00"/>
   <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>
@@ -1638,6 +1640,7 @@ Klinisches Stadium IIB  pT3bN0M0
   </event>
  </trace>
  <trace>
+  <string key="id" value="T2"/>
   <string key="concept:name" value="833533"/>
   <date key="time:timestamp" value="1966-07-30T10:00:00.000+00:00"/>
    <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>
@@ -2166,6 +2169,7 @@ Klinisches Stadium IIA, pT3a N0 M0
   </event>
  </trace>
  <trace>
+  <string key="id" value="T3"/>
   <string key="concept:name" value="855360"/>
   <date key="time:timestamp" value="1947-02-04T10:00:00.000+00:00"/>
    <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>
@@ -2864,6 +2868,7 @@ keine Mikrometastasen US rechts pT2a N0M0 Stadium IB
   </event>
  </trace>
  <trace>
+  <string key="id" value="T4"/>
   <string key="concept:name" value="901302"/>
   <date key="time:timestamp" value="1948-12-02T10:00:00.000+00:00"/>
    <string key="org:resource" value="Universitätsklinikum Münster, Klinik für Hautkrankheiten Von-Esmarch-Str. 58"/>

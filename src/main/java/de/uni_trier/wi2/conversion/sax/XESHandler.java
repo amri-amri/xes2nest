@@ -51,12 +51,15 @@ public final class XESHandler extends DefaultHandler {
     private NESTTaskNodeObject previousTaskNode;
     private NESTWorkflowBuilder<NESTSequentialWorkflowObject> builder;
     private NESTAbstractWorkflowModifier workflowModifier;
+    String[] ids;
+    private int idIndex;
 
-    public void configure(boolean createSubclasses, boolean includeXMLattributes, String classifierName) {
+    public void configure(boolean createSubclasses, boolean includeXMLattributes, String classifierName, String[] ids) {
         this.createSubclasses = createSubclasses;
         this.includeXMLattributes = includeXMLattributes;
         this.completeTraces = classifierName != null;
         this.classifierName = classifierName;
+        this.ids = ids;
     }
 
     public void setModel(Model model) {
@@ -79,15 +82,22 @@ public final class XESHandler extends DefaultHandler {
         //workflows = new ArrayList<>();
         workflow = null;
         builder = new NESTWorkflowBuilderImpl<>();
+        idIndex = 0;
     }
 
     @Override
     public void endDocument() throws SAXParseException {
 
-
         // Are traces to be completed and are there even potential completing events?
         if (completeTraces && !logEvents.isEmpty()) completeTraces();
 
+        if (ids!=null) while (idIndex < ids.length && idIndex < workflows.size()){
+            workflows.get(idIndex).setId(ids[idIndex]);
+            idIndex++;
+        }
+
+        ids = null;
+        idIndex = -1;
         globalScope = null;
         listStack = null;
         builder = null;
@@ -138,6 +148,7 @@ public final class XESHandler extends DefaultHandler {
             logEvents = null;
             return;
         }
+        if (classifier == null) return;
 
         // Go through every non-trace event and see if it belongs to a trace
         String[] keys = classifier.keys();
@@ -159,8 +170,8 @@ public final class XESHandler extends DefaultHandler {
             if (keysUsed < keys.length)
                 throw new SAXParseException("Non-trace-event defined with too few global attributes.", null);
 
-            boolean traceFound = false;
             // Find traces with same identity and append event to it
+            boolean traceFound = false;
             for (NESTSequentialWorkflowObject workflow : workflows) {
                 StringBuilder traceIdentity = new StringBuilder();
                 keysUsed = 0;
