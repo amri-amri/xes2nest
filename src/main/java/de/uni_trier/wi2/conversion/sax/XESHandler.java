@@ -42,7 +42,7 @@ public final class XESHandler extends DefaultHandler {
     private ArrayList<ListObject> logEvents;
     private Model model;
     private Stack<AggregateObject> listStack;
-    private ArrayList<NESTSequentialWorkflowObject> workflows;
+    ArrayList<NESTSequentialWorkflowObject> workflows = new ArrayList<>();
     private NESTSequentialWorkflowObject workflow;
     private boolean completeTraces = false;
     private boolean createSubclasses = false;
@@ -76,7 +76,7 @@ public final class XESHandler extends DefaultHandler {
         globalTraceAttributes = new ArrayList<>();
         previousTaskNode = null;
         event = null;
-        workflows = new ArrayList<>();
+        //workflows = new ArrayList<>();
         workflow = null;
         builder = new NESTWorkflowBuilderImpl<>();
     }

@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
 public class XEStoNESTsAXConverter extends XEStoNESTConverter {
 
@@ -21,7 +22,7 @@ public class XEStoNESTsAXConverter extends XEStoNESTConverter {
 
 
     @Override
-    public ArrayList<NESTSequentialWorkflowObject> convert(String xes) {
+    public List<NESTSequentialWorkflowObject> convert(String xes) {
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();

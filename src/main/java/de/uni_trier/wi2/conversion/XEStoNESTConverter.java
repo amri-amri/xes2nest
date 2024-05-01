@@ -10,9 +10,9 @@ import de.uni_trier.wi2.procake.utils.conversion.OneWayConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public abstract class XEStoNESTConverter implements OneWayConverter<String, ArrayList<NESTSequentialWorkflowObject>> {
+public abstract class XEStoNESTConverter implements OneWayConverter<String, List<NESTSequentialWorkflowObject>> {
 
     private static boolean initialized = false;
 
