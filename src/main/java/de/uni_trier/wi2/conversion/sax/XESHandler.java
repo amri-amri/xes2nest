@@ -240,7 +240,7 @@ public final class XESHandler extends DefaultHandler {
                 inTrace = true;
                 return;
             case XESTagNames.EVENT:
-                event = model.createObject(Classnames.getXESClassName(Classnames.EVENT));
+                event = model.createObject(Classnames.getXESClassName(Classnames.EVENT_CLASS));
                 inEvent = true;
                 return;
             case XESTagNames.GLOBAL:
@@ -319,7 +319,7 @@ public final class XESHandler extends DefaultHandler {
                     DataClass parentClass = parent.getDataClass();
                     ListObject children;
 
-                    if (parentClass.isSubclassOf(model.getClass(Classnames.getXESClassName(Classnames.ATOMIC)))) {
+                    if (parentClass.isSubclassOf(model.getClass(Classnames.getXESClassName(Classnames.ATOMIC_CLASS)))) {
                         children = (ListObject) parent.getAttributeValue(XESorAggregateAttributeNames.CHILDREN);
                     } else {
                         children = (ListObject) parent.getAttributeValue(XESorAggregateAttributeNames.VALUE);
@@ -343,7 +343,7 @@ public final class XESHandler extends DefaultHandler {
                 previousTaskNode = null;
             }
             case XESTagNames.EVENT -> {
-                event = model.createObject(Classnames.getXESClassName(Classnames.EVENT));
+                event = model.createObject(Classnames.getXESClassName(Classnames.EVENT_CLASS));
                 inEvent = true;
             }
             case XESTagNames.STRING, XESTagNames.DATE, XESTagNames.INT, XESTagNames.FLOAT, XESTagNames.BOOLEAN, XESTagNames.ID, XESTagNames.LIST ->
@@ -378,7 +378,7 @@ public final class XESHandler extends DefaultHandler {
                     DataClass parentClass = parent.getDataClass();
                     ListObject children;
 
-                    if (parentClass.isSubclassOf(model.getClass(Classnames.getXESClassName(Classnames.ATOMIC)))) {
+                    if (parentClass.isSubclassOf(model.getClass(Classnames.getXESClassName(Classnames.ATOMIC_CLASS)))) {
                         children = (ListObject) parent.getAttributeValue(XESorAggregateAttributeNames.CHILDREN);
                     } else {
                         children = (ListObject) parent.getAttributeValue(XESorAggregateAttributeNames.VALUE);
@@ -417,37 +417,37 @@ public final class XESHandler extends DefaultHandler {
         switch (qName) {
             case XESTagNames.STRING -> {
                 valueObject = getStringValueObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.STRING);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.STRING_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.DATE -> {
                 valueObject = getDateValueObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.DATETIME);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.DATETIME_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.INT -> {
                 valueObject = getIntObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.INTEGER);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.INTEGER_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.FLOAT -> {
                 valueObject = getFloatValueObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.FLOAT);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.FLOAT_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.BOOLEAN -> {
                 valueObject = getBooleanValueObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.BOOLEAN);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.BOOLEAN_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.ID -> {
                 valueObject = getIDValueObjectOrThrowException(key, value);
-                object = createSubclassObject(key, Classnames.ID);
-                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST)));
+                object = createSubclassObject(key, Classnames.ID_CLASS);
+                object.setAttributeValue(XESorAggregateAttributeNames.CHILDREN, model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS)));
             }
             case XESTagNames.LIST -> {
                 valueObject = getListValueObjectOrThrowException(model, key);
-                object = createSubclassObject(key, Classnames.LIST);
+                object = createSubclassObject(key, Classnames.LIST_CLASS);
             }
             default -> {
                 return;
@@ -458,11 +458,11 @@ public final class XESHandler extends DefaultHandler {
         object.setAttributeValue(XESorAggregateAttributeNames.VALUE, valueObject);
 
         if (includeXMLattributes) {
-            attributeList = model.createObject(Classnames.getXMLClassName(Classnames.ATTRIBUTELIST));
+            attributeList = model.createObject(Classnames.getXMLClassName(Classnames.ATTRIBUTE_LIST_CLASS));
             for (int i = 0; i < attributes.getLength(); i++) {
                 if (attributes.getQName(i).equals(XESorAggregateAttributeNames.KEY) || attributes.getQName(i).equals(XESorAggregateAttributeNames.VALUE))
                     continue;
-                AggregateObject attributeObject = model.createObject(Classnames.getXMLClassName(Classnames.ATTRIBUTE));
+                AggregateObject attributeObject = model.createObject(Classnames.getXMLClassName(Classnames.ATTRIBUTE_CLASS));
                 attributeObject.setAttributeValue(XESorAggregateAttributeNames.NAME, dataObjectUtils.createStringObject(attributes.getQName(i)));
                 attributeObject.setAttributeValue(XESorAggregateAttributeNames.VALUE, dataObjectUtils.createStringObject(attributes.getValue(i)));
                 attributeList.addValue(attributeObject);
@@ -587,7 +587,7 @@ public final class XESHandler extends DefaultHandler {
 
         static ListObject getListValueObjectOrThrowException(Model model, String key) throws SAXParseException {
             if (key == null || key.isEmpty()) throw new SAXParseException("List attribute defined without key.", null);
-            return model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTELIST));
+            return model.createObject(Classnames.getXESClassName(Classnames.ATTRIBUTE_LIST_CLASS));
         }
 
     }
