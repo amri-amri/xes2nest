@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema
-        targetNamespace="https://www.w3schools.com"
-        xmlns:xs="http://www.w3.org/2001/XMLSchema"
-        elementFormDefault="qualified"
-        xmlns="https://www.w3schools.com">
+<xs:schema targetNamespace="https://www.w3schools.com" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    elementFormDefault="qualified" xmlns="https://www.w3schools.com">
 
     <!-- Root element: log -->
-    <xs:element name="loogp" type="LogType"/>
+    <xs:element name="log" type="LogType"/>
 
     <!-- Attributables -->
     <xs:group name="AttributableGroup">
@@ -19,7 +16,6 @@
                 <xs:element name="boolean" type="AttributeBooleanType"/>
                 <xs:element name="id" type="AttributeIDType"/>
                 <xs:element name="list" type="AttributeListType"/>
-                <xs:element name="container" type="AttributeContainerType"/>
             </xs:choice>
         </xs:sequence>
     </xs:group>
@@ -36,7 +32,7 @@
             </xs:extension>
         </xs:complexContent>
     </xs:complexType>
-    
+
     <!-- Date attribute -->
     <xs:complexType name="AttributeDateType">
         <xs:complexContent>
@@ -80,15 +76,7 @@
     <!-- List attribute -->
     <xs:complexType name="AttributeListType">
         <xs:complexContent>
-            <xs:extension base="AttributeType">
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-    <!-- Container attribute -->
-    <xs:complexType name="AttributeContainerType">
-        <xs:complexContent>
-            <xs:extension base="AttributeType">
-            </xs:extension>
+            <xs:extension base="AttributeType"> </xs:extension>
         </xs:complexContent>
     </xs:complexType>
 
@@ -102,11 +90,11 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
-    
+
     <!-- Globals definition -->
     <xs:complexType name="GlobalsType" mixed="true">
         <xs:sequence>
-            <xs:group ref="AttributableGroup"></xs:group>
+            <xs:group ref="AttributableGroup"/>
         </xs:sequence>
         <xs:attribute name="scope" type="ScopeType" use="required"/>
     </xs:complexType>
