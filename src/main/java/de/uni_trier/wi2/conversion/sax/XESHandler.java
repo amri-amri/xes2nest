@@ -1,36 +1,28 @@
 package de.uni_trier.wi2.conversion.sax;
 
-import de.uni_trier.wi2.naming.Classnames;
-import de.uni_trier.wi2.naming.KeyNameConverter;
-import de.uni_trier.wi2.naming.XESTagNames;
-import de.uni_trier.wi2.naming.XESorAggregateAttributeNames;
-import de.uni_trier.wi2.procake.data.model.DataClass;
-import de.uni_trier.wi2.procake.data.model.Model;
-import de.uni_trier.wi2.procake.data.model.base.AggregateClass;
-import de.uni_trier.wi2.procake.data.model.nest.NESTSequentialWorkflowClass;
-import de.uni_trier.wi2.procake.data.object.DataObject;
-import de.uni_trier.wi2.procake.data.object.DataObjectUtils;
+import de.uni_trier.wi2.naming.*;
+import de.uni_trier.wi2.procake.data.model.*;
+import de.uni_trier.wi2.procake.data.model.base.*;
+import de.uni_trier.wi2.procake.data.model.nest.*;
+import de.uni_trier.wi2.procake.data.object.*;
 import de.uni_trier.wi2.procake.data.object.base.*;
-import de.uni_trier.wi2.procake.data.object.nest.NESTSequenceNodeObject;
-import de.uni_trier.wi2.procake.data.object.nest.NESTSequentialWorkflowObject;
-import de.uni_trier.wi2.procake.data.object.nest.NESTTaskNodeObject;
-import de.uni_trier.wi2.procake.data.object.nest.utils.NESTAbstractWorkflowModifier;
-import de.uni_trier.wi2.procake.data.object.nest.utils.NESTWorkflowBuilder;
-import de.uni_trier.wi2.procake.data.object.nest.utils.impl.NESTWorkflowBuilderImpl;
-import org.deckfour.xes.model.impl.XsDateTimeFormat;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXParseException;
-import org.xml.sax.helpers.DefaultHandler;
+import de.uni_trier.wi2.procake.data.object.nest.*;
+import de.uni_trier.wi2.procake.data.object.nest.utils.*;
+import de.uni_trier.wi2.procake.data.object.nest.utils.impl.*;
+import org.xml.sax.*;
+import org.xml.sax.helpers.*;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
+import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import static de.uni_trier.wi2.conversion.sax.XESHandler.ExceptionHandler.*;
 
 public final class XESHandler extends DefaultHandler {
 
     private final DataObjectUtils dataObjectUtils = new DataObjectUtils();
+    ArrayList<NESTSequentialWorkflowObject> workflows = new ArrayList<>();
+    String[] ids;
     private boolean inTrace;
     private boolean inEvent;
     private boolean inGlobal;
@@ -42,7 +34,6 @@ public final class XESHandler extends DefaultHandler {
     private ArrayList<ListObject> logEvents;
     private Model model;
     private Stack<AggregateObject> listStack;
-    ArrayList<NESTSequentialWorkflowObject> workflows = new ArrayList<>();
     private NESTSequentialWorkflowObject workflow;
     private boolean completeTraces = false;
     private boolean createSubclasses = false;
@@ -51,7 +42,6 @@ public final class XESHandler extends DefaultHandler {
     private NESTTaskNodeObject previousTaskNode;
     private NESTWorkflowBuilder<NESTSequentialWorkflowObject> builder;
     private NESTAbstractWorkflowModifier workflowModifier;
-    String[] ids;
     private int idIndex;
 
     public void configure(boolean createSubclasses, boolean includeXMLattributes, String classifierName, String[] ids) {
@@ -91,7 +81,7 @@ public final class XESHandler extends DefaultHandler {
         // Are traces to be completed and are there even potential completing events?
         if (completeTraces && !logEvents.isEmpty()) completeTraces();
 
-        if (ids!=null) while (idIndex < ids.length && idIndex < workflows.size()){
+        if (ids != null) while (idIndex < ids.length && idIndex < workflows.size()) {
             workflows.get(idIndex).setId(ids[idIndex]);
             idIndex++;
         }
@@ -346,8 +336,8 @@ public final class XESHandler extends DefaultHandler {
                 event = model.createObject(Classnames.getXESClassName(Classnames.EVENT_CLASS));
                 inEvent = true;
             }
-            case XESTagNames.STRING, XESTagNames.DATE, XESTagNames.INT, XESTagNames.FLOAT, XESTagNames.BOOLEAN, XESTagNames.ID, XESTagNames.LIST ->
-                    createXESBaseClassObjects_StartElement(qName, attributes);
+            case XESTagNames.STRING, XESTagNames.DATE, XESTagNames.INT, XESTagNames.FLOAT, XESTagNames.BOOLEAN,
+                 XESTagNames.ID, XESTagNames.LIST -> createXESBaseClassObjects_StartElement(qName, attributes);
         }
     }
 
@@ -370,7 +360,8 @@ public final class XESHandler extends DefaultHandler {
                 event = null;
                 inEvent = false;
             }
-            case XESTagNames.STRING, XESTagNames.DATE, XESTagNames.INT, XESTagNames.FLOAT, XESTagNames.BOOLEAN, XESTagNames.ID, XESTagNames.LIST -> {
+            case XESTagNames.STRING, XESTagNames.DATE, XESTagNames.INT, XESTagNames.FLOAT, XESTagNames.BOOLEAN,
+                 XESTagNames.ID, XESTagNames.LIST -> {
                 AggregateObject object = listStack.pop();
                 if (!listStack.isEmpty()) {
                     //stack
@@ -533,9 +524,97 @@ public final class XESHandler extends DefaultHandler {
             if (value == null || value.isEmpty())
                 throw new SAXParseException("Date attribute defined without value.", null);
             try {
-                return dataObjectUtils.createTimestampObject(new Timestamp(new XsDateTimeFormat().parseObject(value).getTime()));
-            } catch (ParseException e) {
-                throw new SAXParseException("Date attribute defined with invalid value.", null);
+                // [-]YYYY-MM-DDThh:mm:ss.nnn[Z|(+|-)hh:mm]
+
+                char[] chars = value.toCharArray();
+
+                int sign = 1;
+                int year = 0;
+                int month = 0;
+                int day = 0;
+                int hour = 0;
+                int minute = 0;
+                int second = 0;
+                int milli = 0;
+                int signExtra = 1;
+                int hourExtra = 0;
+                int minuteExtra = 0;
+
+                int i = 0;
+                StringBuilder stringBuilder = new StringBuilder();
+                enum State {
+                    year,
+                    month,
+                    day,
+                    hour,
+                    minute,
+                    second,
+                    nano,
+                    hourExtra,
+                    minuteExtra,
+                }
+                State state = State.year;
+                while (i < chars.length) {
+                    char c = chars[i];
+                    if (c == ' ') continue;
+                    if (i == 0 && c == '-') {
+                        sign = -1;
+                        continue;
+                    }
+                    if (c == ':' || c == '.' || c == '-' || c == '+' || c == 'T' || c == 't' || c == 'Z' || c == 'z') {
+                        switch (state) {
+                            case year:
+                                year = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case month:
+                                month = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case day:
+                                day = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case hour:
+                                hour = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case minute:
+                                minute = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case second:
+                                second = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case nano:
+                                milli = (int) (1E3 * Double.parseDouble("0." + stringBuilder));
+                                if (c == '-') signExtra = -1;
+                                break;
+                            case hourExtra:
+                                hourExtra = Integer.parseInt(stringBuilder.toString());
+                                break;
+                            case minuteExtra:
+                                minuteExtra = Integer.parseInt(stringBuilder.toString());
+                                break;
+                        }
+                        stringBuilder.setLength(0);
+                        state = State.values()[state.ordinal() + 1];
+                        if (state == State.nano && !value.contains("."))
+                            state = State.values()[state.ordinal() + 1];
+                    } else {
+                        stringBuilder.append(c);
+                    }
+                    i++;
+                }
+
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.YEAR, year * sign);
+                calendar.set(Calendar.MONTH, (month - 1) * sign);
+                calendar.set(Calendar.DAY_OF_MONTH, day * sign);
+                calendar.set(Calendar.HOUR_OF_DAY, hour * sign + hourExtra * signExtra);
+                calendar.set(Calendar.MINUTE, minute * sign + minuteExtra * signExtra);
+                calendar.set(Calendar.SECOND, second * sign);
+                calendar.set(Calendar.MILLISECOND, milli * sign);
+
+                return dataObjectUtils.createTimestampObject(new Timestamp(calendar.getTimeInMillis()));
+
+            } catch (Exception e) {
+                throw new SAXParseException("Date attribute defined with invalid value \"" + value + "\"\n" + e.getMessage(), null);
             }
         }
 

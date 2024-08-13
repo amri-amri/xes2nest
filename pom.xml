@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.uni-trier.wi2</groupId>
-    <artifactId>xestoworkflowconverter</artifactId>
-    <version>2.2.0-SNAPSHOT</version>
+    <artifactId>xes2nest</artifactId>
+    <version>2.3.0</version>
 
     <properties>
         <java.version>17</java.version>
@@ -19,7 +19,7 @@
         <dependency>
             <groupId>de.uni-trier.wi2</groupId>
             <artifactId>procake-framework</artifactId>
-            <version>4.0.0</version>
+            <version>6.0.0</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
